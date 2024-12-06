@@ -1,0 +1,158 @@
+            +---.vscode
+            +---Achievemnets
+            +---AI
+            +---assets
+            +---Daily_log
+            +---Dashboard
+            +---docs
+            +---Learning_Progress
+            +---node_modules
+            +---OverView
+            +---Projects
+            +---public
+            +---Recent_Activity
+            +---scripts
+            +---src
+            +---Training_Center
+            |   .env.local
+            |   .gitattributes
+            |   .gitignore
+            |   directory_structure.txt
+            |   eslint.config.js
+            |   generate_directory_structure.ps1
+            |   generate_src_structure.ps1
+            |   index.html
+            |   package-lock.json
+            |   package.json
+            |   postcss.config.js
+            |   tailwind.config.js
+            |   vite.config.js
+                |   settings.json
+                +---videos
+                    |   Untitled-3.mp4
+                |   AI_Learning_Platform_Blueprint.pdf
+                |   Cyberpunk_Theme_Documentation.md
+                |   Session Summary.md
+                +---backgrounds
+                +---logos
+                +---video
+                    |   Untitled-2 (1).png
+                    |   Untitled-2 (2).png
+                    |   Untitled-2 (3).png
+                    |   Untitled-2 (4).png
+                    |   Untitled-2.png
+                    |   Untitled-3 (42).png
+                    |   Untitled-3 (43).png
+                    |   Untitled-3 (44).png
+                    |   Untitled-3 (45).png
+                    |   Untitled-3 (46).png
+                    |   Untitled-3 (47).png
+                    |   Untitled-3 (48).png
+                    |   Untitled-3 (49).png
+                    |   Untitled-3 (50).png
+                    |   Untitled-3 (51).png
+                    |   Untitled-3 (52).png
+                    |   Untitled-3 (53).png
+                    |   Untitled-3 (54).png
+                    |   Untitled-3 (55).png
+                    |   Untitled-3 (56).png
+                    |   Untitled-3 (57).png
+                    |   Untitled-3 (58).png
+                    |   Untitled-3 (59).png
+                    |   Untitled-3 (60).png
+                    |   Untitled-3 (61).png
+                    |   myAi_brain.png
+                    |   myAI_v2.png
+                    |   myAI.png
+                    |   Untitled-3 (1).png
+                    |   Untitled-3 (10).png
+                    |   Untitled-3 (11).png
+                    |   Untitled-3 (12).png
+                    |   Untitled-3 (13).png
+                    |   Untitled-3 (14).png
+                    |   Untitled-3 (15).png
+                    |   Untitled-3 (16).png
+                    |   Untitled-3 (17).png
+                    |   Untitled-3 (18).png
+                    |   Untitled-3 (19).png
+                    |   Untitled-3 (2).png
+                    |   Untitled-3 (20).png
+                    |   Untitled-3 (21).png
+                    |   Untitled-3 (22).png
+                    |   Untitled-3 (23).png
+                    |   Untitled-3 (24).png
+                    |   Untitled-3 (25).png
+                    |   Untitled-3 (26).png
+                    |   Untitled-3 (27).png
+                    |   Untitled-3 (28).png
+                    |   Untitled-3 (29).png
+                    |   Untitled-3 (3).png
+                    |   Untitled-3 (30).png
+                    |   Untitled-3 (31).png
+                    |   Untitled-3 (32).png
+                    |   Untitled-3 (33).png
+                    |   Untitled-3 (34).png
+                    |   Untitled-3 (35).png
+                    |   Untitled-3 (36).png
+                    |   Untitled-3 (37).png
+                    |   Untitled-3 (38).png
+                    |   Untitled-3 (39).png
+                    |   Untitled-3 (4).png
+                    |   Untitled-3 (40).png
+                    |   Untitled-3 (5).png
+                    |   Untitled-3 (6).png
+                    |   Untitled-3 (7).png
+                    |   Untitled-3 (8).png
+                    |   Untitled-3 (9).png
+                    |   Untitled-3.png
+                |   check_status.ps1
+                |   clean_git_history.ps1
+                |   cleanup_folder.ps1
+                |   cleanup_stash.ps1
+                |   commit_recovered_changes.ps1
+                |   compress_video.ps1
+                |   create_final_video_docs.ps1
+                |   create_video_info.ps1
+                |   create_video_placeholder.ps1
+                |   fix_git_ownership.ps1
+                |   force_push.ps1
+                |   handle_changes.ps1
+                |   list_cleanup_files.ps1
+                |   list_safe_directories.ps1
+                |   push_final_changes.ps1
+                |   push_to_github.ps1
+                |   recover_changes.ps1
+                |   recover_stash_safely.ps1
+                |   remove_large_file.ps1
+                |   retry_clean_history.ps1
+                |   setup_git_lfs.ps1
+                |   setup_lfs_tracking.ps1
+                |   update_final_gitignore.ps1
+                |   update_gitignore.ps1
+                |   update_repository.ps1
+                |   verify_git_status.ps1
+                |   verify_status.ps1
+                +---components
+                |   App.jsx
+                |   config.js
+                |   directory_structure.txt
+                |   index.css
+                |   main.jsx
+                    +---auth
+                    +---dashboard
+                    +---ui
+                    |   CyberpunkLoginEnhanced.jsx
+                    |   CyberpunkRegistration.jsx
+                    |   CyberpunkVerification.jsx
+                    |   EnhancedCyberpunkBackground.jsx
+                    |   ExplosionEffect.jsx
+                        |   ProtectedRoute.jsx
+                        +---patterns
+                        |   Dashboard.jsx
+                            |   BrainCircuit.jsx
+                            |   CircuitBoardPattern.jsx
+                            |   CircuitCard.jsx
+                            |   CircuitPatternCard.jsx
+                            |   index.js
+                        |   CyberpunkError.jsx
+                        |   LoadingScreen.jsx
