@@ -4,11 +4,9 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  build: {
-    outDir: 'dist',
-  },
   server: {
-    port: 5177,
+    port: 5178,
+    strictPort: true  // This will make Vite fail if it can't get port 5178
   },
   resolve: {
     alias: {
