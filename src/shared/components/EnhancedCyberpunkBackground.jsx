@@ -13,9 +13,25 @@ const EnhancedCyberpunkBackground = () => {
     }
   }), []);
 
+  const gradientVariants = useMemo(() => ({
+    animate: {
+      background: [
+        'linear-gradient(45deg, rgba(255,46,151,0.15) 0%, rgba(0,246,255,0.15) 100%)',
+        'linear-gradient(225deg, rgba(255,46,151,0.15) 0%, rgba(0,246,255,0.15) 100%)',
+        'linear-gradient(45deg, rgba(255,46,151,0.15) 0%, rgba(0,246,255,0.15) 100%)'
+      ],
+      opacity: [0.5, 1, 0.5],
+      transition: {
+        duration: 10,
+        ease: "easeInOut",
+        repeat: Infinity
+      }
+    }
+  }), []);
+
   const glowVariants = useMemo(() => ({
     animate: {
-      opacity: [0.3, 0.5, 0.3],
+      opacity: [0.2, 0.4, 0.2],
       scale: [1, 1.1, 1],
       transition: {
         duration: 5,
@@ -27,7 +43,32 @@ const EnhancedCyberpunkBackground = () => {
 
   return (
     <div className="overflow-hidden absolute inset-0">
-      {/* Grid Pattern */}
+      {/* Static Square Grid */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px'
+        }}
+      />
+
+      {/* Animated Gradient Grid */}
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(45deg, rgba(255,46,151,0.15) 0%, rgba(0,246,255,0.15) 100%)
+          `,
+          backgroundSize: '200% 200%'
+        }}
+        variants={gradientVariants}
+        animate="animate"
+      />
+
+      {/* Moving Grid Pattern */}
       <motion.div
         className="absolute inset-0"
         style={{

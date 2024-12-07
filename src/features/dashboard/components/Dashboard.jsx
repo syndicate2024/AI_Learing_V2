@@ -97,9 +97,14 @@ const Dashboard = () => {
             isLoginScreen={false} 
             onVideoComplete={handleVideoComplete} 
           />
-        ) : (
+        ) : null}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
           <EnhancedCyberpunkBackground />
-        )}
+        </motion.div>
       </div>
 
       {/* Explosion Effect - highest layer */}
