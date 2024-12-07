@@ -495,15 +495,15 @@ const CyberpunkLoginEnhanced = () => {
               </div>
 
               <div className="mb-8 text-center">
-                <motion.h1
-                  className="mb-2 text-4xl font-bold tracking-wider text-white font-orbitron"
+                <motion.h1 
+                  className="mb-4 text-4xl font-bold tracking-wider text-white font-orbitron"
                   style={{ textShadow: "0 0 10px rgba(0,246,255,0.5)" }}
-                  animate={{
+                  animate={{ 
                     textShadow: [
                       "0 0 10px rgba(0,246,255,0.5)",
                       "0 0 15px rgba(255,46,151,0.5)",
-                      "0 0 10px rgba(0,246,255,0.5)",
-                    ],
+                      "0 0 10px rgba(0,246,255,0.5)"
+                    ]
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
@@ -611,9 +611,9 @@ const CyberpunkLoginEnhanced = () => {
                 <div className="mt-4 text-center">
                   <Link
                     to="/register"
-                    className="transition-colors duration-200 text-white/70 hover:text-white"
+                    className="text-xl transition-colors duration-200 text-white/70 hover:text-white"
                   >
-                    Don&apos;t have an account?
+                    Don&apos;t have an account?{' '}
                     <span className="ml-1 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-transparent">
                       Register here
                     </span>

@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { UserPlus, ArrowLeftIcon, EyeIcon, EyeOffIcon } from 'lucide-react';
 import { ExplosionEffect } from '../../../shared/components';
 import VideoBackground from '../../../shared/components/VideoBackground';
-import { CyberpunkError, LoadingScreen } from '../../../shared/components/ui';
 
 const CyberpunkRegistration = () => {
   const navigate = useNavigate();
@@ -94,15 +93,15 @@ const CyberpunkRegistration = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.8 }}
-            className="fixed inset-0 flex items-center justify-center p-4"
+            className="flex fixed inset-0 justify-center items-center p-4"
           >
             <motion.div 
-              className="w-full max-w-md p-8 border rounded-2xl bg-black/40 backdrop-blur-xl border-white/10"
+              className="p-8 w-full max-w-md rounded-2xl border backdrop-blur-xl bg-black/40 border-white/10"
               style={{ boxShadow: '0 0 15px rgba(0,246,255,0.1)' }}
             >
-              <div className="mb-8 text-center">
+              <div className="mb-16 text-center">
                 <motion.h1 
-                  className="mb-2 text-4xl font-bold tracking-wider text-white font-orbitron"
+                  className="mb-4 text-6xl font-bold tracking-wider text-white font-orbitron"
                   style={{ textShadow: "0 0 10px rgba(0,246,255,0.5)" }}
                   animate={{ 
                     textShadow: [
@@ -115,7 +114,7 @@ const CyberpunkRegistration = () => {
                 >
                   JOIN THE FUTURE
                 </motion.h1>
-                <p className="bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-xl tracking-widest text-transparent font-semibold font-exo">
+                <p className="bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-2xl tracking-widest text-transparent font-semibold font-exo">
                   CREATE • INNOVATE • EVOLVE
                 </p>
               </div>
@@ -132,7 +131,7 @@ const CyberpunkRegistration = () => {
                     className={inputClasses}
                     required
                   />
-                  <div className="absolute inset-0 transition-opacity duration-300 opacity-0 -z-10 group-hover:opacity-100">
+                  <div className="absolute inset-0 opacity-0 transition-opacity duration-300 -z-10 group-hover:opacity-100">
                     <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-sm" />
                   </div>
                 </div>
@@ -146,7 +145,7 @@ const CyberpunkRegistration = () => {
                     className={inputClasses}
                     required
                   />
-                  <div className="absolute inset-0 transition-opacity duration-300 opacity-0 -z-10 group-hover:opacity-100">
+                  <div className="absolute inset-0 opacity-0 transition-opacity duration-300 -z-10 group-hover:opacity-100">
                     <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-sm" />
                   </div>
                 </div>
@@ -163,11 +162,11 @@ const CyberpunkRegistration = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute -translate-y-1/2 right-4 top-1/2 text-white/50 hover:text-white"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
                   >
                     {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
                   </button>
-                  <div className="absolute inset-0 transition-opacity duration-300 opacity-0 -z-10 group-hover:opacity-100">
+                  <div className="absolute inset-0 opacity-0 transition-opacity duration-300 -z-10 group-hover:opacity-100">
                     <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-sm" />
                   </div>
                 </div>
@@ -184,16 +183,16 @@ const CyberpunkRegistration = () => {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute -translate-y-1/2 right-4 top-1/2 text-white/50 hover:text-white"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
                   >
                     {showConfirmPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
                   </button>
-                  <div className="absolute inset-0 transition-opacity duration-300 opacity-0 -z-10 group-hover:opacity-100">
+                  <div className="absolute inset-0 opacity-0 transition-opacity duration-300 -z-10 group-hover:opacity-100">
                     <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-sm" />
                   </div>
                 </div>
 
-                <label className="relative flex items-center mt-4 transition-colors duration-200 cursor-pointer select-none text-white/80 hover:text-white">
+                <label className="flex relative items-center mt-4 transition-colors duration-200 cursor-pointer select-none text-white/80 hover:text-white">
                   <input
                     type="checkbox"
                     checked={formData.agreeToTerms}
@@ -225,7 +224,7 @@ const CyberpunkRegistration = () => {
                 </label>
 
                 {/* Buttons */}
-                <div className="flex items-center justify-between gap-4 mt-8">
+                <div className="flex gap-4 justify-between items-center mt-8">
                   <motion.button
                     type="button"
                     onClick={() => navigate('/')}
@@ -233,7 +232,7 @@ const CyberpunkRegistration = () => {
                     whileTap={{ scale: 0.95 }}
                     className="w-12 h-12 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] p-[2px] flex items-center justify-center group"
                   >
-                    <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
+                    <div className="flex justify-center items-center w-full h-full bg-black rounded-full">
                       <ArrowLeftIcon size={20} className="text-white group-hover:text-[#00F6FF] transition-colors" />
                     </div>
                   </motion.button>
@@ -244,7 +243,7 @@ const CyberpunkRegistration = () => {
                     whileTap={{ scale: 0.98 }}
                     className="flex-grow px-12 py-4 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] text-white font-bold relative group overflow-hidden"
                   >
-                    <span className="relative z-10 flex items-center justify-center gap-2 font-orbitron">
+                    <span className="flex relative z-10 gap-2 justify-center items-center font-orbitron">
                       Register <UserPlus size={20} />
                     </span>
                     <div className="absolute inset-0 bg-gradient-to-r from-[#00F6FF] to-[#FF2E97] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
