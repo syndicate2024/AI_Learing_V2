@@ -16,9 +16,11 @@ const Dashboard = () => {
     return saved !== null ? JSON.parse(saved) : true;
   });
   const [showExplosion, setShowExplosion] = useState(false);
-  const [activeSection, setActiveSection] = useState("Overview");
+  const [activeSection, setActiveSection] = useState(() => {
+    const saved = localStorage.getItem('dashboardActiveSection');
+    return saved || "overview";
+  });
   const [showVideo, setShowVideo] = useState(() => {
-    // Check if we've shown the video before in this session
     const hasShownVideo = sessionStorage.getItem('dashboardVideoShown');
     return !hasShownVideo;
   });
@@ -29,11 +31,16 @@ const Dashboard = () => {
     localStorage.setItem('dashboardSidebarOpen', JSON.stringify(isSidebarOpen));
   }, [isSidebarOpen]);
 
+  // Update localStorage when active section changes
+  useEffect(() => {
+    localStorage.setItem('dashboardActiveSection', activeSection);
+  }, [activeSection]);
+
   const handleSignOut = useCallback(() => {
     setShowExplosion(true);
     setTimeout(() => {
       localStorage.removeItem("rememberedCredentials");
-      // Clear the video shown flag when logging out
+      localStorage.removeItem("dashboardActiveSection");
       sessionStorage.removeItem('dashboardVideoShown');
       signOut()
         .then(() => navigate("/"))
@@ -42,17 +49,16 @@ const Dashboard = () => {
   }, [signOut, navigate]);
 
   const handleNavigation = useCallback((section) => {
-    if (section === activeSection) return; // Don't do anything if clicking the same section
+    if (section === activeSection) return;
     
-    // Only trigger glitch effect
     setGlitchingTab(section);
     
-    // Update active section and navigate after glitch
+    // Navigate and update active section
     setTimeout(() => {
       setActiveSection(section);
       navigate(section);
       // Reset glitch after animation
-      setTimeout(() => setGlitchingTab(null), 500);
+      setTimeout(() => setGlitchingTab(null), 300); // Match glitch duration
     }, 50);
   }, [navigate, activeSection]);
 

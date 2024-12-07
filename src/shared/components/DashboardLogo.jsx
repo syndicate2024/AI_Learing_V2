@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-const LOGO_CHANGE_INTERVAL = 300000;
+const LOGO_CHANGE_INTERVAL = 300000; // 5 minutes
 
 const shuffleArray = (array) => {
   const newArray = [...array];
@@ -62,23 +62,6 @@ const DashboardLogo = () => {
     getLogos();
   }, []);
 
-  // Preload next logo
-  useEffect(() => {
-    if (logos.length === 0) return;
-
-    const preloadNext = async () => {
-      setNextLogoPreloaded(false);
-      try {
-        await preloadImage(logos[nextLogoIndex]);
-        setNextLogoPreloaded(true);
-      } catch (error) {
-        console.error('Failed to preload next logo:', error);
-      }
-    };
-
-    preloadNext();
-  }, [nextLogoIndex, logos]);
-
   useEffect(() => {
     if (logos.length === 0) return;
 
@@ -124,110 +107,94 @@ const DashboardLogo = () => {
 
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentLogoIndex}
-          initial={{ opacity: 0, scale: 0.8, rotate: -180 }}
-          animate={{ 
-            opacity: 1, 
-            scale: 1, 
-            rotate: 0,
-          }}
-          exit={{ 
-            opacity: 0.5, // Keep some opacity during exit
-            scale: 0.9,
-            rotate: 180,
-          }}
-          transition={{ 
-            duration: 1.5,
-            ease: "easeInOut"
-          }}
-          className="relative w-full h-full"
-        >
-          {/* Main container with all effects */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            {/* Outer glow and border */}
-            <motion.div
-              className="absolute w-full h-full rounded-full"
-              style={{
-                background: 'black',
-                boxShadow: `
+      <div className="relative w-full h-full">
+        {/* Main container with all effects */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          {/* Outer glow and border */}
+          <motion.div
+            className="absolute w-full h-full rounded-full"
+            style={{
+              background: 'black',
+              boxShadow: `
+                0 0 40px rgba(0,246,255,0.5),
+                0 0 80px rgba(0,246,255,0.3),
+                inset 0 0 100px rgba(255,46,151,0.3)
+              `,
+              border: '2px solid #00F6FF',
+              perspective: '1000px',
+              transformStyle: 'preserve-3d'
+            }}
+            animate={{
+              boxShadow: [
+                `
                   0 0 40px rgba(0,246,255,0.5),
                   0 0 80px rgba(0,246,255,0.3),
                   inset 0 0 100px rgba(255,46,151,0.3)
                 `,
-                border: '2px solid #00F6FF'
-              }}
-              animate={{
-                boxShadow: [
-                  `
-                    0 0 40px rgba(0,246,255,0.5),
-                    0 0 80px rgba(0,246,255,0.3),
-                    inset 0 0 100px rgba(255,46,151,0.3)
-                  `,
-                  `
-                    0 0 50px rgba(255,46,151,0.5),
-                    0 0 90px rgba(255,46,151,0.3),
-                    inset 0 0 110px rgba(0,246,255,0.3)
-                  `,
-                  `
-                    0 0 40px rgba(0,246,255,0.5),
-                    0 0 80px rgba(0,246,255,0.3),
-                    inset 0 0 100px rgba(255,46,151,0.3)
-                  `
-                ]
-              }}
-              transition={{
+                `
+                  0 0 50px rgba(255,46,151,0.5),
+                  0 0 90px rgba(255,46,151,0.3),
+                  inset 0 0 110px rgba(0,246,255,0.3)
+                `,
+                `
+                  0 0 40px rgba(0,246,255,0.5),
+                  0 0 80px rgba(0,246,255,0.3),
+                  inset 0 0 100px rgba(255,46,151,0.3)
+                `
+              ],
+              rotateY: isTransitioning ? 360 : 0
+            }}
+            transition={{
+              boxShadow: {
                 duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut"
-              }}
-            />
-
+              },
+              rotateY: {
+                duration: 1,
+                ease: "easeInOut"
+              }
+            }}
+          >
             {/* Image container */}
             <div 
               className="absolute w-full h-full rounded-full overflow-hidden"
               style={{ transform: 'scale(1.01)' }}
             >
-              <AnimatePresence mode="wait" initial={false}>
+              {/* Current Logo */}
+              <motion.div
+                className="absolute inset-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              >
+                <img
+                  src={logos[currentLogoIndex]}
+                  alt="Current Cyberpunk Logo"
+                  className="absolute w-full h-full object-cover"
+                  style={{ transform: 'scale(1.2)' }}
+                />
+              </motion.div>
+
+              {/* Next Logo (preloaded and ready for transition) */}
+              {isTransitioning && nextLogoPreloaded && (
                 <motion.div
-                  key={logos[currentLogoIndex]}
-                  className="w-full h-full"
+                  className="absolute inset-0"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  exit={{ opacity: 0.5 }} // Keep some opacity during exit
-                  transition={{ 
-                    duration: 1,
-                    exit: { duration: 1 },
-                    crossfade: true 
-                  }}
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+                  transition={{ duration: 1 }}
                 >
                   <img
-                    src={logos[currentLogoIndex]}
-                    alt="Cyberpunk Logo"
-                    className={`absolute w-full h-full object-cover transition-transform duration-1000 ${
-                      isTransitioning ? 'scale-110' : 'scale-100'
-                    }`}
-                    style={{
-                      transform: 'scale(1.2)',
-                    }}
-                    onError={() => {
-                      console.error(`Error loading logo: ${logos[currentLogoIndex]}`);
-                      setCurrentLogoIndex((prev) => (prev + 1) % logos.length);
-                    }}
+                    src={logos[nextLogoIndex]}
+                    alt="Next Cyberpunk Logo"
+                    className="absolute w-full h-full object-cover"
+                    style={{ transform: 'scale(1.2)' }}
                   />
                 </motion.div>
-              </AnimatePresence>
+              )}
 
-              {/* Preload next image */}
+              {/* Hidden preload container */}
               <div className="hidden">
                 <img
                   src={logos[nextLogoIndex]}
@@ -240,9 +207,9 @@ const DashboardLogo = () => {
                 />
               </div>
             </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 };

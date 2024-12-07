@@ -60,7 +60,7 @@ const DashboardSidebar = ({ isOpen, activeSection, glitchingTab, onNavigate }) =
                   <motion.button
                     onClick={() => onNavigate(item.path)}
                     className={`flex items-center w-full gap-3 px-4 py-2.5 transition-all rounded-lg group relative overflow-hidden
-                      ${item.path === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
+                      ${item.path === activeSection ? "bg-gradient-to-r from-[#FF2E97]/20 to-[#00F6FF]/20" : "hover:bg-white/5"}`}
                     whileHover={{ 
                       x: 5,
                       transition: { duration: 0.1 }
@@ -69,14 +69,14 @@ const DashboardSidebar = ({ isOpen, activeSection, glitchingTab, onNavigate }) =
                   >
                     <div className={`absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 
                       transition-opacity duration-300 ${
-                        item.path === activeSection ? "opacity-10" : "group-hover:opacity-5"
+                        item.path === activeSection ? "opacity-20" : "group-hover:opacity-5"
                       }`} />
                     <div className="relative z-10 flex items-center gap-3">
                       <item.icon
                         className={`w-5 h-5 transition-colors duration-300
                           ${
                             item.path === activeSection
-                              ? "text-[#00F6FF]"
+                              ? "text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF]"
                               : "text-white/70 group-hover:text-[#00F6FF]"
                           }`}
                       />
@@ -107,7 +107,7 @@ const DashboardSidebar = ({ isOpen, activeSection, glitchingTab, onNavigate }) =
                   <motion.button
                     onClick={() => onNavigate(item.path)}
                     className={`flex items-center w-full gap-3 px-4 py-2.5 transition-all rounded-lg group relative overflow-hidden
-                      ${item.path === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
+                      ${item.path === activeSection ? "bg-gradient-to-r from-[#FF2E97]/20 to-[#00F6FF]/20" : "hover:bg-white/5"}`}
                     whileHover={{ 
                       x: 5,
                       transition: { duration: 0.1 }
@@ -116,14 +116,14 @@ const DashboardSidebar = ({ isOpen, activeSection, glitchingTab, onNavigate }) =
                   >
                     <div className={`absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 
                       transition-opacity duration-300 ${
-                        item.path === activeSection ? "opacity-10" : "group-hover:opacity-5"
+                        item.path === activeSection ? "opacity-20" : "group-hover:opacity-5"
                       }`} />
                     <div className="relative z-10 flex items-center gap-3">
                       <item.icon
                         className={`w-5 h-5 transition-colors duration-300
                           ${
                             item.path === activeSection
-                              ? "text-[#00F6FF]"
+                              ? "text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF]"
                               : "text-white/70 group-hover:text-[#00F6FF]"
                           }`}
                       />

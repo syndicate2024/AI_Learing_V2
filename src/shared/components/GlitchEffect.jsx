@@ -7,25 +7,30 @@ const GlitchEffect = ({ children, isGlitching, className = '' }) => {
             x: 0,
             y: 0,
             scale: 1,
-            filter: 'none'
+            filter: 'none',
+            transition: {
+                duration: 0.2,
+                ease: "easeOut"
+            }
         },
         glitch: {
-            x: [0, -10, 15, -5, 0, 10, -15, 5, 0],
-            y: [0, 8, -12, 5, 0, -8, 12, -5, 0],
-            scale: [1, 1.3, 0.8, 1.2, 1, 1.3, 0.8, 1.2, 1],
+            x: [0, -15, 20, -8, 0, 15, -20, 8, 0],
+            y: [0, 12, -15, 8, 0, -12, 15, -8, 0],
+            scale: [1, 1.4, 0.7, 1.3, 1, 1.4, 0.7, 1.3, 1],
             filter: [
                 'none',
-                'brightness(300%) contrast(200%) hue-rotate(90deg) saturate(200%)',
+                'brightness(400%) contrast(300%) hue-rotate(90deg) saturate(300%)',
                 'brightness(100%) contrast(100%) hue-rotate(0deg)',
-                'brightness(400%) contrast(300%) hue-rotate(-90deg) saturate(200%)',
+                'brightness(500%) contrast(400%) hue-rotate(-90deg) saturate(300%)',
                 'none',
-                'brightness(300%) contrast(200%) hue-rotate(180deg) saturate(200%)',
+                'brightness(400%) contrast(300%) hue-rotate(180deg) saturate(300%)',
                 'none'
             ],
             transition: {
-                duration: 0.5,
+                duration: 0.3,
                 times: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1],
-                ease: "linear"
+                ease: "easeInOut",
+                repeat: 0
             }
         }
     };
