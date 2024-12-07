@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useUser, useClerk } from "@clerk/clerk-react";
-import { useNavigate, Outlet, useLocation } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import {
   LayoutDashboard,
   Code2,
@@ -100,10 +100,10 @@ const Dashboard = () => {
       {/* Main Content Container - mid layer */}
       <div className="relative z-10">
         {/* Top Navigation Bar */}
-        <nav className="fixed top-0 right-0 left-0 z-30 px-8 py-4 border-b backdrop-blur-xl bg-black/40 border-white/10">
-          <div className="relative z-[1] flex items-center justify-between mx-auto max-w-7xl">
+        <nav className="fixed top-0 right-0 left-0 z-30 h-32 border-b backdrop-blur-xl bg-black/40 border-white/10">
+          <div className="relative z-[1] flex items-center justify-between mx-auto max-w-7xl h-full px-12">
             {/* Left Section - Title with Menu */}
-            <div className="flex items-center min-w-[300px]">
+            <div className="flex items-center min-w-[400px] pt-4">
               <motion.h1
                 className="flex items-center gap-4 text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron"
                 animate={{
@@ -129,12 +129,12 @@ const Dashboard = () => {
             </div>
 
             {/* Center Section - Logo */}
-            <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 translate-y-[20%]">
+            <div className="absolute left-1/2 transform -translate-x-1/2 translate-y-[40%] bottom-[-13px]">
               <DashboardLogo />
             </div>
 
             {/* Right Section - User Controls */}
-            <div className="flex items-center gap-4 min-w-[300px] justify-end">
+            <div className="flex items-center gap-4 min-w-[400px] justify-end pt-4">
               <motion.div
                 className="flex gap-2 items-center p-2 rounded-lg border backdrop-blur-lg bg-black/20 border-white/10"
                 whileHover={{ scale: 1.02 }}
@@ -240,12 +240,12 @@ const Dashboard = () => {
 
         {/* Main Content Area */}
         <motion.main
-          className="relative z-10 pt-36 transition-all duration-300"
+          className="relative z-10 pt-52 transition-all duration-300"
           animate={{
             marginLeft: isSidebarOpen ? "280px" : "0px",
           }}
         >
-          <div className="px-6 mx-auto max-w-7xl flex items-center justify-center min-h-[calc(100vh-144px)]">
+          <div className="px-6 mx-auto max-w-7xl flex items-center justify-center min-h-[calc(100vh-208px)]">
             <Outlet />
           </div>
         </motion.main>

@@ -21,7 +21,7 @@ const DashboardLogo = () => {
   }, [logos.length]);
 
   return (
-    <div className="flex items-center justify-center h-28">
+    <div className="flex items-center justify-center h-40">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentLogoIndex}
@@ -40,16 +40,16 @@ const DashboardLogo = () => {
             duration: 1,
             ease: "easeInOut"
           }}
-          className="relative w-28 h-28 flex items-center justify-center"
+          className="relative w-40 h-40 flex items-center justify-center"
         >
           {/* Outer Glow Ring */}
           <motion.div
             className="absolute inset-0 rounded-full"
             animate={{
               boxShadow: [
-                '0 0 30px rgba(0,246,255,0.5), 0 0 60px rgba(0,246,255,0.3), inset 0 0 80px rgba(255,46,151,0.3)',
-                '0 0 40px rgba(255,46,151,0.5), 0 0 70px rgba(255,46,151,0.3), inset 0 0 90px rgba(0,246,255,0.3)',
-                '0 0 30px rgba(0,246,255,0.5), 0 0 60px rgba(0,246,255,0.3), inset 0 0 80px rgba(255,46,151,0.3)',
+                '0 0 40px rgba(0,246,255,0.5), 0 0 80px rgba(0,246,255,0.3), inset 0 0 100px rgba(255,46,151,0.3)',
+                '0 0 50px rgba(255,46,151,0.5), 0 0 90px rgba(255,46,151,0.3), inset 0 0 110px rgba(0,246,255,0.3)',
+                '0 0 40px rgba(0,246,255,0.5), 0 0 80px rgba(0,246,255,0.3), inset 0 0 100px rgba(255,46,151,0.3)',
               ]
             }}
             transition={{
@@ -63,7 +63,7 @@ const DashboardLogo = () => {
           <img
             src={logos[currentLogoIndex]}
             alt="Cyberpunk Logo"
-            className="h-24 w-24 object-contain relative z-10"
+            className="h-32 w-32 object-contain relative z-10"
           />
 
           {/* Inner Rotating Glow */}
