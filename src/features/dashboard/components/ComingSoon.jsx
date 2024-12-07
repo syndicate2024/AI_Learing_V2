@@ -1,73 +1,78 @@
 import { motion } from "framer-motion";
+import PropTypes from 'prop-types';
 
 const ComingSoon = ({ title }) => {
   return (
-    <div className="flex relative flex-col justify-center items-center p-8 w-full h-full">
+    <div className="relative w-full max-w-2xl mx-auto">
+      {/* Content */}
       <motion.div
+        className="relative z-20 p-8 rounded-lg border backdrop-blur-xl bg-black/40 border-white/10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center"
+        transition={{ duration: 0.5 }}
       >
-        <h2 className="text-4xl font-bold mb-4 font-orbitron bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-transparent">
-          {title}
-        </h2>
-        
-        <div className="inline-block relative">
-          <motion.p
-            className="mb-8 text-2xl font-exo text-white/80"
-            animate={{
-              textShadow: [
-                "0 0 10px rgba(0,246,255,0.5)",
-                "2px 0 10px rgba(255,46,151,0.5)",
-                "0 0 10px rgba(0,246,255,0.5)",
-              ],
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            INITIALIZING...
-          </motion.p>
-        </div>
-
-        <motion.div
-          className="p-8 rounded-lg border backdrop-blur-xl border-white/10 bg-black/40"
+        <motion.h2
+          className="text-4xl font-bold mb-4 text-center bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-transparent font-orbitron"
           animate={{
-            boxShadow: [
-              "0 0 20px rgba(0,246,255,0.2)",
-              "0 0 20px rgba(255,46,151,0.2)",
-              "0 0 20px rgba(0,246,255,0.2)",
+            textShadow: [
+              "0 0 10px rgba(0,246,255,0.5)",
+              "0 0 15px rgba(255,46,151,0.5)",
+              "0 0 10px rgba(0,246,255,0.5)",
             ],
           }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          <p className="mb-4 text-xl font-exo text-white/60">
-            This feature is currently in development.
-          </p>
-          <div className="flex gap-2 justify-center">
-            <span className="text-[#FF2E97]">COMING</span>
+          {title}
+        </motion.h2>
+
+        <motion.div
+          className="text-center text-gray-400 text-lg mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          INITIALIZING...
+        </motion.div>
+
+        <motion.div
+          className="text-center p-6 rounded-lg backdrop-blur-sm bg-black/20 border border-white/10"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <p className="text-gray-300 mb-4">This feature is currently in development.</p>
+          <p className="font-bold">
+            <span className="text-[#FF2E97]">COMING</span>{" "}
             <span className="text-[#00F6FF]">SOON</span>
-          </div>
+          </p>
         </motion.div>
       </motion.div>
 
       {/* Background Grid Effect */}
-      <div className="grid absolute inset-0 grid-cols-8 gap-2 opacity-10 -z-10 grid-rows-8">
+      <div className="fixed inset-x-32 top-48 bottom-32 grid grid-cols-8 gap-2 opacity-20 -z-10">
         {[...Array(64)].map((_, i) => (
           <motion.div
             key={i}
-            className="bg-gradient-to-r from-[#FF2E97] to-[#00F6FF]"
+            className="bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] rounded-sm"
             animate={{
-              opacity: [0.5, 1, 0.5],
+              opacity: [0.3, 0.7, 0.3],
+              scale: [1, 1.03, 1],
             }}
             transition={{
               duration: 2,
               repeat: Infinity,
-              delay: i * 0.1,
+              delay: i * 0.05,
+              ease: "easeInOut"
             }}
           />
         ))}
       </div>
     </div>
   );
+};
+
+ComingSoon.propTypes = {
+  title: PropTypes.string.isRequired,
 };
 
 export default ComingSoon; 

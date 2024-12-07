@@ -26,7 +26,7 @@ const EnhancedCyberpunkBackground = () => {
   }), []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="overflow-hidden absolute inset-0">
       {/* Grid Pattern */}
       <motion.div
         className="absolute inset-0"
@@ -55,3 +55,4 @@ const EnhancedCyberpunkBackground = () => {
 };
 
 export default React.memo(EnhancedCyberpunkBackground);
+

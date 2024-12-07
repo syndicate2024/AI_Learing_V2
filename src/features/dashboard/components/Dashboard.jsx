@@ -100,7 +100,7 @@ const Dashboard = () => {
       {/* Main Content Container - mid layer */}
       <div className="relative z-10">
         {/* Top Navigation Bar */}
-        <nav className="fixed top-0 right-0 left-0 z-30 h-32 border-b backdrop-blur-xl bg-black/40 border-white/10">
+        <nav className="fixed top-0 right-0 left-0 z-40 h-32 border-b backdrop-blur-xl bg-black/40 border-white/10">
           <div className="relative z-[1] flex items-center justify-between mx-auto max-w-7xl h-full px-12">
             {/* Left Section - Title with Menu */}
             <div className="flex items-center min-w-[400px] pt-4">
@@ -178,7 +178,7 @@ const Dashboard = () => {
 
         {/* Sidebar */}
         <motion.div
-          className="fixed top-0 left-0 z-20 pt-20 h-full border-r backdrop-blur-xl bg-black/40 border-white/10"
+          className="fixed top-0 left-0 z-30 h-screen border-r backdrop-blur-xl bg-black/40 border-white/10"
           animate={{
             width: isSidebarOpen ? "280px" : "0px",
             opacity: isSidebarOpen ? 1 : 0,
@@ -189,50 +189,99 @@ const Dashboard = () => {
           }}
         >
           {isSidebarOpen && (
-            <div className="relative z-[1] p-3">
-              <div className="space-y-2">
-                {menuItems.map((item) => (
-                  <motion.button
-                    key={item.title}
-                    onClick={() => handleNavigation(item.path)}
-                    className={`flex items-center w-full gap-3 px-4 py-2.5 transition-all rounded-lg group relative overflow-hidden
-                              ${item.title === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
-                    whileHover={{ 
-                      x: 5,
-                      transition: { duration: 0.1 }
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{
-                      duration: 0.2,
-                      delay: 0
-                    }}
-                  >
-                    <div className={`absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 
-                                transition-opacity duration-300 ${
-                                  item.title === activeSection ? "opacity-10" : "group-hover:opacity-5"
-                                }`} />
-                    <item.icon
-                      className={`w-6 h-6 transition-colors duration-300
-                                ${
-                                  item.title === activeSection
-                                    ? "text-[#00F6FF]"
-                                    : "text-white/70 group-hover:text-[#00F6FF]"
-                                }`}
-                    />
-                    <span
-                      className={`font-medium tracking-wide font-exo text-lg whitespace-nowrap transition-colors duration-300
-                                ${
-                                  item.title === activeSection
-                                    ? "bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-transparent"
-                                    : "text-white/70 group-hover:text-white"
-                                }`}
+            <div className="relative z-[1] flex flex-col h-full pt-32 pb-6">
+              <div className="flex-1 flex flex-col justify-between p-3">
+                {/* Core Features Group */}
+                <div className="space-y-2">
+                  {menuItems.slice(0, 7).map((item) => (
+                    <motion.button
+                      key={item.title}
+                      onClick={() => handleNavigation(item.path)}
+                      className={`flex items-center w-full gap-3 px-4 py-2.5 transition-all rounded-lg group relative overflow-hidden
+                                ${item.title === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
+                      whileHover={{ 
+                        x: 5,
+                        transition: { duration: 0.1 }
+                      }}
+                      whileTap={{ scale: 0.98 }}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{
+                        duration: 0.2,
+                        delay: 0
+                      }}
                     >
-                      {item.title}
-                    </span>
-                  </motion.button>
-                ))}
+                      <div className={`absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 
+                                  transition-opacity duration-300 ${
+                                    item.title === activeSection ? "opacity-10" : "group-hover:opacity-5"
+                                  }`} />
+                      <item.icon
+                        className={`w-5 h-5 transition-colors duration-300
+                                  ${
+                                    item.title === activeSection
+                                      ? "text-[#00F6FF]"
+                                      : "text-white/70 group-hover:text-[#00F6FF]"
+                                  }`}
+                      />
+                      <span
+                        className={`font-medium tracking-wide font-exo text-base whitespace-nowrap transition-colors duration-300
+                                  ${
+                                    item.title === activeSection
+                                      ? "bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-transparent"
+                                      : "text-white/70 group-hover:text-white"
+                                  }`}
+                      >
+                        {item.title}
+                      </span>
+                    </motion.button>
+                  ))}
+                </div>
+
+                {/* Additional Features Group */}
+                <div className="space-y-2 mt-4">
+                  {menuItems.slice(7).map((item) => (
+                    <motion.button
+                      key={item.title}
+                      onClick={() => handleNavigation(item.path)}
+                      className={`flex items-center w-full gap-3 px-4 py-2.5 transition-all rounded-lg group relative overflow-hidden
+                                ${item.title === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
+                      whileHover={{ 
+                        x: 5,
+                        transition: { duration: 0.1 }
+                      }}
+                      whileTap={{ scale: 0.98 }}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{
+                        duration: 0.2,
+                        delay: 0
+                      }}
+                    >
+                      <div className={`absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 
+                                  transition-opacity duration-300 ${
+                                    item.title === activeSection ? "opacity-10" : "group-hover:opacity-5"
+                                  }`} />
+                      <item.icon
+                        className={`w-5 h-5 transition-colors duration-300
+                                  ${
+                                    item.title === activeSection
+                                      ? "text-[#00F6FF]"
+                                      : "text-white/70 group-hover:text-[#00F6FF]"
+                                  }`}
+                      />
+                      <span
+                        className={`font-medium tracking-wide font-exo text-base whitespace-nowrap transition-colors duration-300
+                                  ${
+                                    item.title === activeSection
+                                      ? "bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-transparent"
+                                      : "text-white/70 group-hover:text-white"
+                                  }`}
+                      >
+                        {item.title}
+                      </span>
+                    </motion.button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -240,10 +289,7 @@ const Dashboard = () => {
 
         {/* Main Content Area */}
         <motion.main
-          className="relative z-10 pt-52 transition-all duration-300"
-          animate={{
-            marginLeft: isSidebarOpen ? "280px" : "0px",
-          }}
+          className="relative z-10 pt-52 w-full"
         >
           <div className="px-6 mx-auto max-w-7xl flex items-center justify-center min-h-[calc(100vh-208px)]">
             <Outlet />
