@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const LOGO_CHANGE_INTERVAL = 5000;
+const LOGO_CHANGE_INTERVAL = 300000;
 
 const shuffleArray = (array) => {
   const newArray = [...array];
@@ -38,7 +38,7 @@ const DashboardLogo = () => {
       setIsLoading(true);
       const validLogos = [];
       
-      for (let i = 4; i <= 25; i++) {
+      for (let i = 4; i <= 59; i++) {
         const logoPath = `/logos/${i}.png`;
         try {
           const isValid = await preloadImage(logoPath);
@@ -51,6 +51,7 @@ const DashboardLogo = () => {
       }
 
       if (validLogos.length > 0) {
+        console.log(`Loaded ${validLogos.length} valid logos`);
         setLogos(shuffleArray(validLogos));
       }
       setIsLoading(false);
