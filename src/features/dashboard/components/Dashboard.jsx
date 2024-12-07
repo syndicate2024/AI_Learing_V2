@@ -4,7 +4,6 @@ import { useUser, useClerk } from "@clerk/clerk-react";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
-  BookOpen,
   Code2,
   Trophy,
   Activity,
@@ -26,12 +25,13 @@ import {
   ExplosionEffect 
 } from '../../../shared/components';
 import VideoBackground from '../../../shared/components/VideoBackground';
+import DashboardLogo from '../../../shared/components/DashboardLogo';
 
 const Dashboard = () => {
   const { user } = useUser();
   const { signOut } = useClerk();
   const navigate = useNavigate();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showExplosion, setShowExplosion] = useState(false);
   const [activeSection, setActiveSection] = useState("Overview");
   const [showVideo, setShowVideo] = useState(true);
@@ -100,22 +100,12 @@ const Dashboard = () => {
       {/* Main Content Container - mid layer */}
       <div className="relative z-10">
         {/* Top Navigation Bar */}
-        <nav className="fixed top-0 right-0 left-0 z-30 px-4 py-3 border-b backdrop-blur-xl bg-black/40 border-white/10">
+        <nav className="fixed top-0 right-0 left-0 z-30 px-8 py-4 border-b backdrop-blur-xl bg-black/40 border-white/10">
           <div className="relative z-[1] flex items-center justify-between mx-auto max-w-7xl">
-            {/* Menu Toggle & Title */}
-            <div className="flex gap-4 items-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="overflow-hidden relative p-2 rounded-full transition-colors group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 group-hover:opacity-20 transition-opacity" />
-                <Menu className="w-6 h-6 text-white" />
-              </motion.button>
-
+            {/* Left Section - Title with Menu */}
+            <div className="flex items-center min-w-[300px]">
               <motion.h1
-                className="text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron"
+                className="flex items-center gap-4 text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron"
                 animate={{
                   textShadow: [
                     "0 0 10px rgba(0,246,255,0.5)",
@@ -126,11 +116,25 @@ const Dashboard = () => {
                 transition={{ duration: 2, repeat: Infinity }}
               >
                 CYBERPUNK DASHBOARD
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                  className="overflow-hidden relative p-2 rounded-full transition-colors group ml-2"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 group-hover:opacity-20 transition-opacity" />
+                  <Menu className="w-6 h-6 text-[#00F6FF]" />
+                </motion.button>
               </motion.h1>
             </div>
 
-            {/* User Controls */}
-            <div className="flex gap-4 items-center">
+            {/* Center Section - Logo */}
+            <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 translate-y-[20%]">
+              <DashboardLogo />
+            </div>
+
+            {/* Right Section - User Controls */}
+            <div className="flex items-center gap-4 min-w-[300px] justify-end">
               <motion.div
                 className="flex gap-2 items-center p-2 rounded-lg border backdrop-blur-lg bg-black/20 border-white/10"
                 whileHover={{ scale: 1.02 }}
@@ -236,12 +240,12 @@ const Dashboard = () => {
 
         {/* Main Content Area */}
         <motion.main
-          className="relative z-10 pt-24 transition-all duration-300"
+          className="relative z-10 pt-36 transition-all duration-300"
           animate={{
             marginLeft: isSidebarOpen ? "280px" : "0px",
           }}
         >
-          <div className="px-6 mx-auto max-w-7xl">
+          <div className="px-6 mx-auto max-w-7xl flex items-center justify-center min-h-[calc(100vh-144px)]">
             <Outlet />
           </div>
         </motion.main>
