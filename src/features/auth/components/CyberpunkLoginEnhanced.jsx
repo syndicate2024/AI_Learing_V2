@@ -32,34 +32,6 @@ ErrorMessage.propTypes = {
   message: PropTypes.string
 };
 
-// Clear Storage Button Component
-const ClearStorageButton = ({ onClear }) => (
-  <motion.div
-    className="absolute z-50 top-4 right-4"
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-  >
-    <button
-      onClick={onClear}
-      className="relative px-4 py-2 text-sm border rounded-full font-exo 
-                text-white/50 border-white/20 backdrop-blur-sm 
-                transition-all duration-300 
-                hover:text-white hover:border-[#00F6FF] 
-                hover:shadow-[0_0_15px_rgba(0,246,255,0.3)]
-                group overflow-hidden"
-    >
-      <span className="relative z-10">Clear Storage</span>
-      <div className="absolute inset-0 transition-all duration-300 opacity-0 group-hover:opacity-100">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur opacity-50" />
-      </div>
-    </button>
-  </motion.div>
-);
-
-ClearStorageButton.propTypes = {
-  onClear: PropTypes.func.isRequired
-};
-
 const CyberpunkLoginEnhanced = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -348,8 +320,6 @@ const CyberpunkLoginEnhanced = () => {
     <div className="fixed inset-0 bg-gradient-to-br from-[#0A0F1B] to-[#1A0B2E]">
       <VideoBackground isLoginScreen={true} />
 
-      <ClearStorageButton onClear={handleClearStorage} />
-      
       <AnimatePresence>
         {showExplosion && (
           <ExplosionEffect onComplete={() => navigate("/dashboard")} />
@@ -363,10 +333,10 @@ const CyberpunkLoginEnhanced = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="fixed inset-0 flex items-center justify-center p-4"
+            className="flex fixed inset-0 justify-center items-center p-4"
           >
             <motion.div
-              className="w-full max-w-md p-8 border rounded-2xl bg-black/40 backdrop-blur-xl border-white/10"
+              className="p-8 w-full max-w-md rounded-2xl border backdrop-blur-xl bg-black/40 border-white/10"
               style={{
                 boxShadow: "0 0 15px rgba(0,246,255,0.1)",
               }}
@@ -375,14 +345,14 @@ const CyberpunkLoginEnhanced = () => {
 
               <div className="flex flex-col items-center mb-8">
                 {/* Top Controls - Spread to edges */}
-                <div className="flex justify-between w-full px-4">
+                <div className="flex justify-between px-4 w-full">
                   <motion.button
                     onClick={() => fileInputRef.current.click()}
                     whileHover={{ scale: 1.05, rotate: 360 }}
                     whileTap={{ scale: 0.95 }}
                     className="w-12 h-12 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] p-[2px]"
                   >
-                    <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
+                    <div className="flex justify-center items-center w-full h-full bg-black rounded-full">
                       <Upload className="w-6 h-6 text-white" />
                     </div>
                   </motion.button>
@@ -393,7 +363,7 @@ const CyberpunkLoginEnhanced = () => {
                     whileTap={{ scale: 0.95 }}
                     className="w-12 h-12 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] p-[2px]"
                   >
-                    <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
+                    <div className="flex justify-center items-center w-full h-full bg-black rounded-full">
                       <Camera className="w-6 h-6 text-white" />
                     </div>
                   </motion.button>
@@ -406,13 +376,13 @@ const CyberpunkLoginEnhanced = () => {
                   className="w-40 h-40 mt-4 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] p-[2px]"
                 >
                   {imagePreview ? (
-                    <div className="relative w-full h-full overflow-hidden rounded-full group">
+                    <div className="overflow-hidden relative w-full h-full rounded-full group">
                       <img
                         src={imagePreview}
                         alt="Preview"
                         className="object-cover w-full h-full"
                       />
-                      <div className="absolute inset-0 flex items-center justify-center gap-4 transition-opacity opacity-0 bg-black/50 group-hover:opacity-100">
+                      <div className="flex absolute inset-0 gap-4 justify-center items-center opacity-0 transition-opacity bg-black/50 group-hover:opacity-100">
                         <motion.button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -437,7 +407,7 @@ const CyberpunkLoginEnhanced = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
+                    <div className="flex justify-center items-center w-full h-full bg-black rounded-full">
                       <Camera className="w-16 h-16 text-white" />
                     </div>
                   )}
@@ -489,7 +459,7 @@ const CyberpunkLoginEnhanced = () => {
                     spellCheck="false"
                     data-form-type="other"
                   />
-                  <div className="absolute inset-0 transition-opacity duration-300 opacity-0 -z-10 group-hover:opacity-100">
+                  <div className="absolute inset-0 opacity-0 transition-opacity duration-300 -z-10 group-hover:opacity-100">
                     <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-sm" />
                   </div>
                 </div>
@@ -509,12 +479,13 @@ const CyberpunkLoginEnhanced = () => {
                     autoComplete="new-password"
                     data-form-type="other"
                   />
-                  <div className="absolute inset-0 transition-opacity duration-300 opacity-0 -z-10 group-hover:opacity-100">
+                  <div className="absolute inset-0 opacity-0 transition-opacity duration-300 -z-10 group-hover:opacity-100">
                     <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-sm" />
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between gap-4 mt-8">
+                <div className="flex gap-4 justify-between items-center mt-8">
+                  {/* Comment out Google button
                   <motion.button
                     onClick={handleGoogleLogin}
                     disabled={isGoogleLoading}
@@ -522,7 +493,7 @@ const CyberpunkLoginEnhanced = () => {
                     whileTap={{ scale: 0.95 }}
                     className="w-12 h-12 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] p-[2px]"
                   >
-                    <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
+                    <div className="flex justify-center items-center w-full h-full bg-black rounded-full">
                       {isGoogleLoading ? (
                         <RefreshCcw className="w-6 h-6 text-white animate-spin" />
                       ) : (
@@ -530,6 +501,7 @@ const CyberpunkLoginEnhanced = () => {
                       )}
                     </div>
                   </motion.button>
+                  */}
 
                   <motion.button
                     type="submit"
@@ -537,13 +509,13 @@ const CyberpunkLoginEnhanced = () => {
                     whileTap={{ scale: 0.98 }}
                     className="flex-grow px-12 py-4 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] text-white font-bold relative font-exo group overflow-hidden"
                   >
-                    <span className="relative z-10 flex items-center justify-center gap-2 font-orbitron">
+                    <span className="flex relative z-10 gap-2 justify-center items-center font-orbitron">
                       Begin <LogIn size={20} />
                     </span>
-
                     <div className="absolute inset-0 bg-gradient-to-r from-[#00F6FF] to-[#FF2E97] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </motion.button>
 
+                  {/* Comment out Facebook button
                   <motion.button
                     onClick={handleFacebookLogin}
                     disabled={isFacebookLoading}
@@ -551,7 +523,7 @@ const CyberpunkLoginEnhanced = () => {
                     whileTap={{ scale: 0.95 }}
                     className="w-12 h-12 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] p-[2px]"
                   >
-                    <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
+                    <div className="flex justify-center items-center w-full h-full bg-black rounded-full">
                       {isFacebookLoading ? (
                         <RefreshCcw className="w-6 h-6 text-white animate-spin" />
                       ) : (
@@ -561,6 +533,7 @@ const CyberpunkLoginEnhanced = () => {
                       )}
                     </div>
                   </motion.button>
+                  */}
                 </div>
 
                 <div className="mt-4 text-center">
@@ -582,7 +555,7 @@ const CyberpunkLoginEnhanced = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+                  className="flex fixed inset-0 z-50 justify-center items-center bg-black/80"
                 >
                   <div className="relative p-4 rounded-lg bg-black/90">
                     <video
@@ -592,7 +565,7 @@ const CyberpunkLoginEnhanced = () => {
                       muted
                       className="w-full max-w-md rounded-lg"
                     />
-                    <div className="flex justify-center gap-4 mt-4">
+                    <div className="flex gap-4 justify-center mt-4">
                       <motion.button
                         onClick={capturePhoto}
                         whileHover={{ scale: 1.05 }}
@@ -682,10 +655,10 @@ const CyberpunkLoginEnhanced = () => {
                   repeat: Infinity,
                   ease: "linear",
                 }}
-                className="relative w-24 h-24 rounded-full bg-black"
+                className="relative w-24 h-24 bg-black rounded-full"
               >
                 <div className="absolute inset-1 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-50" />
-                <div className="absolute inset-2 rounded-full bg-black" />
+                <div className="absolute inset-2 bg-black rounded-full" />
                 
                 {/* Data Stream Effect */}
                 <motion.div
@@ -698,7 +671,7 @@ const CyberpunkLoginEnhanced = () => {
                     repeat: Infinity,
                     ease: "linear",
                   }}
-                  className="absolute inset-x-0 h-full overflow-hidden"
+                  className="overflow-hidden absolute inset-x-0 h-full"
                 >
                   {[...Array(6)].map((_, i) => (
                     <div
@@ -739,7 +712,7 @@ const CyberpunkLoginEnhanced = () => {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 whitespace-nowrap"
+                className="absolute -bottom-12 left-1/2 whitespace-nowrap transform -translate-x-1/2"
               >
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron text-lg">
                   INITIALIZING
