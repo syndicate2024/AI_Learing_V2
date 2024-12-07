@@ -6,4 +6,5 @@ export { default as GlitchEffect } from './GlitchEffect';
 export { default as VideoBackground } from './VideoBackground';
 export { default as RotatingLogo } from './RotatingLogo';
 export { default as CyberpunkGrid } from './CyberpunkGrid';
+export { default as PulsingGridOverlay } from './PulsingGridOverlay';
 // Add other component exports as needed 

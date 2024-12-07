@@ -169,11 +169,15 @@ const DashboardLogo = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 1 }}
               >
-                <img
+                <motion.img
                   src={logos[currentLogoIndex]}
                   alt="Current Cyberpunk Logo"
                   className="absolute w-full h-full object-cover"
                   style={{ transform: 'scale(1.2)' }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 1 }}
+                  transition={{ duration: 1 }}
                 />
               </motion.div>
 
@@ -185,11 +189,14 @@ const DashboardLogo = () => {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 1 }}
                 >
-                  <img
+                  <motion.img
                     src={logos[nextLogoIndex]}
                     alt="Next Cyberpunk Logo"
                     className="absolute w-full h-full object-cover"
                     style={{ transform: 'scale(1.2)' }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1 }}
                   />
                 </motion.div>
               )}

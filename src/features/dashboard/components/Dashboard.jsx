@@ -2,8 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useClerk } from "@clerk/clerk-react";
 import { useNavigate, Outlet } from "react-router-dom";
-import { ExplosionEffect } from '../../../shared/components';
-import VideoBackground from '../../../shared/components/VideoBackground';
+import { ExplosionEffect, PulsingGridOverlay } from '../../../shared/components';
 import CyberpunkGrid from '../../../shared/components/CyberpunkGrid';
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
@@ -19,10 +18,6 @@ const Dashboard = () => {
   const [activeSection, setActiveSection] = useState(() => {
     const saved = localStorage.getItem('dashboardActiveSection');
     return saved || "overview";
-  });
-  const [showVideo, setShowVideo] = useState(() => {
-    const hasShownVideo = sessionStorage.getItem('dashboardVideoShown');
-    return !hasShownVideo;
   });
   const [glitchingTab, setGlitchingTab] = useState(null);
 
@@ -41,7 +36,7 @@ const Dashboard = () => {
     setTimeout(() => {
       localStorage.removeItem("rememberedCredentials");
       localStorage.removeItem("dashboardActiveSection");
-      sessionStorage.removeItem('dashboardVideoShown');
+      localStorage.removeItem('dashboardVideoShown');
       signOut()
         .then(() => navigate("/"))
         .catch((error) => console.error("Error signing out:", error));
@@ -53,12 +48,10 @@ const Dashboard = () => {
     
     setGlitchingTab(section);
     
-    // Navigate and update active section
     setTimeout(() => {
       setActiveSection(section);
       navigate(section);
-      // Reset glitch after animation
-      setTimeout(() => setGlitchingTab(null), 300); // Match glitch duration
+      setTimeout(() => setGlitchingTab(null), 300);
     }, 50);
   }, [navigate, activeSection]);
 
@@ -66,26 +59,13 @@ const Dashboard = () => {
     setIsSidebarOpen(prev => !prev);
   }, []);
 
-  const handleVideoComplete = useCallback(() => {
-    setShowVideo(false);
-    // Mark that we've shown the video in this session
-    sessionStorage.setItem('dashboardVideoShown', 'true');
-  }, []);
-
   return (
     <div className="relative min-h-screen bg-[#0A0F1B] overflow-hidden">
-      {/* Base Layer - Grid */}
+      {/* Base Layer - Subtle Grid */}
       <CyberpunkGrid />
 
-      {/* Video Layer */}
-      <div className="fixed inset-0 z-10">
-        {showVideo && (
-          <VideoBackground 
-            isLoginScreen={false} 
-            onVideoComplete={handleVideoComplete} 
-          />
-        )}
-      </div>
+      {/* Second Layer - Pulsing Grid */}
+      <PulsingGridOverlay />
 
       {/* Navigation and Sidebar */}
       <DashboardNavbar 
@@ -100,28 +80,26 @@ const Dashboard = () => {
       />
 
       {/* Coming Soon - Mid Layer */}
-      {!showVideo && (
-        <motion.div
-          className="fixed inset-0 z-20 flex items-center justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
+      <motion.div
+        className="fixed inset-0 z-20 flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        <motion.h1
+          className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron"
+          animate={{
+            textShadow: [
+              "0 0 20px rgba(0,246,255,0.5)",
+              "0 0 30px rgba(255,46,151,0.5)",
+              "0 0 20px rgba(0,246,255,0.5)",
+            ],
+          }}
+          transition={{ duration: 2, repeat: Infinity }}
         >
-          <motion.h1
-            className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron"
-            animate={{
-              textShadow: [
-                "0 0 20px rgba(0,246,255,0.5)",
-                "0 0 30px rgba(255,46,151,0.5)",
-                "0 0 20px rgba(0,246,255,0.5)",
-              ],
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            COMING SOON
-          </motion.h1>
-        </motion.div>
-      )}
+          COMING SOON
+        </motion.h1>
+      </motion.div>
 
       {/* Explosion Effect - Top Layer */}
       {showExplosion && (
