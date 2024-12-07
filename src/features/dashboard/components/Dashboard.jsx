@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useUser, useClerk } from "@clerk/clerk-react";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   BookOpen,
@@ -185,13 +185,13 @@ const Dashboard = () => {
           }}
         >
           {isSidebarOpen && (
-            <div className="relative z-[1] p-4">
-              <div className="space-y-3">
+            <div className="relative z-[1] p-3">
+              <div className="space-y-2">
                 {menuItems.map((item) => (
                   <motion.button
                     key={item.title}
                     onClick={() => handleNavigation(item.path)}
-                    className={`flex items-center w-full gap-4 px-5 py-4 transition-all rounded-lg group relative overflow-hidden
+                    className={`flex items-center w-full gap-3 px-4 py-2.5 transition-all rounded-lg group relative overflow-hidden
                               ${item.title === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
                     whileHover={{ 
                       x: 5,

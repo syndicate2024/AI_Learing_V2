@@ -11,6 +11,20 @@ import {
   ProtectedRoute 
 } from '../features/auth/components';
 import Dashboard from '../features/dashboard/components/Dashboard';
+import { 
+  Overview,
+  LearningProgress,
+  Projects,
+  Achievements,
+  Activity,
+  DailyLog,
+  Backup,
+  Challenges,
+  Community,
+  AIAssistant,
+  Resources,
+  Premium
+} from '../features/dashboard/components';
 
 // Loading screen component stays the same
 const LoadingScreen = () => (
@@ -102,10 +116,25 @@ function AppRoutes() {
           path={config.routes.dashboard}
           element={
             <ProtectedRoute>
-              <Dashboard /> 
+              <Dashboard />
             </ProtectedRoute>
           }
-        />
+        >
+          {/* Dashboard nested routes */}
+          <Route index element={<Overview />} />
+          <Route path="overview" element={<Overview />} />
+          <Route path="learning-progress" element={<LearningProgress />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="achievements" element={<Achievements />} />
+          <Route path="activity" element={<Activity />} />
+          <Route path="daily-log" element={<DailyLog />} />
+          <Route path="backup" element={<Backup />} />
+          <Route path="challenges" element={<Challenges />} />
+          <Route path="community" element={<Community />} />
+          <Route path="ai-assistant" element={<AIAssistant />} />
+          <Route path="resources" element={<Resources />} />
+          <Route path="premium" element={<Premium />} />
+        </Route>
       </Routes>
     </AnimatePresence>
   );

@@ -12,7 +12,6 @@ const ComingSoon = ({ title }) => {
           {title}
         </h2>
         
-        {/* Glitch Effect Container */}
         <div className="inline-block relative">
           <motion.p
             className="mb-8 text-2xl font-exo text-white/80"
@@ -29,7 +28,6 @@ const ComingSoon = ({ title }) => {
           </motion.p>
         </div>
 
-        {/* Cyberpunk Border */}
         <motion.div
           className="p-8 rounded-lg border backdrop-blur-xl border-white/10 bg-black/40"
           animate={{

@@ -1,4 +1,4 @@
-import { ComingSoon } from '../ComingSoon';
+import ComingSoon from '../ComingSoon';
 
 const Community = () => {
   return <ComingSoon title="Community" />;
