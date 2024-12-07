@@ -668,10 +668,11 @@ const CyberpunkLoginEnhanced = () => {
           <motion.div
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.8 }}
             className="fixed inset-0 bg-[#0A0F1B] flex items-center justify-center z-50"
           >
-            <div className="relative">
+            {/* Main container - centered absolutely */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
               {/* Random Laser Effects */}
               {[...Array(8)].map((_, i) => (
                 <motion.div
@@ -687,8 +688,8 @@ const CyberpunkLoginEnhanced = () => {
                     scale: [0, 1, 1],
                     opacity: [0, 1, 0],
                     rotate: `${Math.random() * 360}deg`,
-                    x: [0, (Math.random() - 0.5) * 200],
-                    y: [0, (Math.random() - 0.5) * 200]
+                    x: [0, (Math.random() - 0.5) * 400],
+                    y: [0, (Math.random() - 0.5) * 400]
                   }}
                   transition={{
                     duration: 2,
@@ -696,83 +697,86 @@ const CyberpunkLoginEnhanced = () => {
                     repeatDelay: Math.random() * 2,
                     ease: "linear"
                   }}
-                  className="absolute left-1/2 top-1/2 w-px h-20 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-sm"
+                  className="absolute w-px h-40 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-sm"
                   style={{
-                    transformOrigin: "center"
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)'
                   }}
                 />
               ))}
 
-              {/* Rotating Border */}
-              <motion.div
-                animate={{
-                  rotate: [0, 360],
-                }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-md"
-              />
-
-              {/* Inner Spinning Circle */}
-              <motion.div
-                animate={{
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 180, 360],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="relative w-24 h-24 bg-black rounded-full"
-              >
-                <div className="absolute inset-1 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-50" />
-                <div className="absolute inset-2 bg-black rounded-full" />
-                
-                {/* Data Stream Effect */}
+              {/* Rotating Border and Glow Container */}
+              <div className="relative w-48 h-48">
+                {/* Rotating Border */}
                 <motion.div
-                  animate={{
-                    opacity: [0, 1, 0],
-                    y: [-20, 20],
-                  }}
+                  animate={{ rotate: [0, 360] }}
                   transition={{
-                    duration: 1.5,
+                    duration: 8,
                     repeat: Infinity,
                     ease: "linear",
                   }}
-                  className="overflow-hidden absolute inset-x-0 h-full"
-                >
-                  {[...Array(6)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="absolute w-px h-2 bg-[#00F6FF]"
-                      style={{
-                        left: `${(i + 1) * 15}%`,
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        opacity: 0.6,
-                      }}
-                    />
-                  ))}
-                </motion.div>
-              </motion.div>
+                  className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-md"
+                />
 
-              {/* Outer Glow */}
-              <motion.div
-                animate={{
-                  opacity: [0.5, 0.8, 0.5],
-                  scale: [1, 1.1, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF2E97]/20 to-[#00F6FF]/20 blur-xl"
-              />
+                {/* Outer Glow */}
+                <motion.div
+                  animate={{
+                    opacity: [0.5, 0.8, 0.5],
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF2E97]/20 to-[#00F6FF]/20 blur-xl"
+                />
+
+                {/* Inner Spinning Circle */}
+                <motion.div
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    rotate: [0, 180, 360],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  className="absolute inset-0 bg-black rounded-full"
+                >
+                  <div className="absolute inset-2 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-50" />
+                  <div className="absolute inset-4 bg-black rounded-full" />
+                  
+                  {/* Data Stream Effect */}
+                  <motion.div
+                    animate={{
+                      opacity: [0, 1, 0],
+                      y: [-40, 40],
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                    className="overflow-hidden absolute inset-x-0 h-full"
+                  >
+                    {[...Array(6)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute w-px h-4 bg-[#00F6FF]"
+                        style={{
+                          left: `${(i + 1) * 15}%`,
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          opacity: 0.6,
+                        }}
+                      />
+                    ))}
+                  </motion.div>
+                </motion.div>
+              </div>
 
               {/* Loading Text */}
               <motion.div
@@ -784,14 +788,17 @@ const CyberpunkLoginEnhanced = () => {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute -bottom-12 left-1/2 whitespace-nowrap transform -translate-x-1/2"
+                className="absolute left-1/2 -translate-x-1/2"
+                style={{
+                  bottom: '-8rem'
+                }}
               >
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron text-lg">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron text-2xl">
                   INITIALIZING
                 </span>
               </motion.div>
 
-              {/* Add particle effects */}
+              {/* Particles */}
               {[...Array(12)].map((_, i) => (
                 <motion.div
                   key={`particle-${i}`}
@@ -804,8 +811,8 @@ const CyberpunkLoginEnhanced = () => {
                   animate={{
                     scale: [0, 1, 0],
                     opacity: [0, 0.8, 0],
-                    x: [0, (Math.random() - 0.5) * 100],
-                    y: [0, (Math.random() - 0.5) * 100]
+                    x: [0, (Math.random() - 0.5) * 200],
+                    y: [0, (Math.random() - 0.5) * 200]
                   }}
                   transition={{
                     duration: 1.5,
@@ -813,7 +820,12 @@ const CyberpunkLoginEnhanced = () => {
                     repeatDelay: Math.random(),
                     ease: "easeOut"
                   }}
-                  className="absolute left-1/2 top-1/2 w-1 h-1 rounded-full bg-[#00F6FF]"
+                  className="absolute w-2 h-2 rounded-full bg-[#00F6FF]"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                  }}
                 />
               ))}
             </div>
