@@ -32,6 +32,60 @@ ErrorMessage.propTypes = {
   message: PropTypes.string
 };
 
+const GlitchImage = ({ src, alt }) => {
+  const [glitchStyle, setGlitchStyle] = useState({});
+
+  useEffect(() => {
+    const generateGlitchEffect = () => {
+      const effects = [
+        {
+          transform: `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`,
+          filter: `hue-rotate(${Math.random() * 360}deg) saturate(${150 + Math.random() * 150}%)`,
+          clipPath: `polygon(${Math.random() * 10}% 0%, 100% 0%, 100% 100%, 0% 100%)`
+        },
+        {
+          transform: `skew(${Math.random() * 10 - 5}deg)`,
+          filter: `brightness(${150 + Math.random() * 50}%) contrast(${150 + Math.random() * 50}%)`,
+          clipPath: `inset(${Math.random() * 20}% 0 ${Math.random() * 20}% 0)`
+        },
+        {
+          transform: `scale(${1 + Math.random() * 0.1})`,
+          filter: `blur(${Math.random() * 2}px)`,
+          opacity: 0.8 + Math.random() * 0.2
+        }
+      ];
+
+      return effects[Math.floor(Math.random() * effects.length)];
+    };
+
+    const interval = setInterval(() => {
+      if (Math.random() > 0.7) { // 30% chance to trigger glitch
+        setGlitchStyle(generateGlitchEffect());
+        
+        // Reset glitch after a short duration
+        setTimeout(() => {
+          setGlitchStyle({});
+        }, 150);
+      }
+    }, 2000); // Check every 2 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="relative w-full h-full">
+      <img
+        src={src}
+        alt={alt}
+        className="object-cover w-full h-full rounded-full transition-all duration-150"
+        style={glitchStyle}
+      />
+      <div className="absolute inset-0 rounded-full mix-blend-overlay bg-gradient-to-r from-[#FF2E97]/10 to-[#00F6FF]/10" />
+      <div className="absolute inset-0 rounded-full opacity-50 mix-blend-overlay animate-pulse bg-gradient-to-r from-[#FF2E97]/5 to-[#00F6FF]/5" />
+    </div>
+  );
+};
+
 const CyberpunkLoginEnhanced = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -377,11 +431,7 @@ const CyberpunkLoginEnhanced = () => {
                 >
                   {imagePreview ? (
                     <div className="overflow-hidden relative w-full h-full rounded-full group">
-                      <img
-                        src={imagePreview}
-                        alt="Preview"
-                        className="object-cover w-full h-full"
-                      />
+                      <GlitchImage src={imagePreview} alt="Preview" />
                       <div className="flex absolute inset-0 gap-4 justify-center items-center opacity-0 transition-opacity bg-black/50 group-hover:opacity-100">
                         <motion.button
                           onClick={(e) => {
