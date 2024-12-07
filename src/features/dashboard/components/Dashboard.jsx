@@ -176,6 +176,18 @@ const Dashboard = () => {
           </div>
         </nav>
 
+        {/* Curved Neon Line */}
+        {!showVideo && (
+          <motion.div
+            className="fixed top-0 left-0 right-0 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            {/* Line temporarily removed */}
+          </motion.div>
+        )}
+
         {/* Sidebar */}
         <motion.div
           className="fixed top-0 left-0 z-30 h-screen border-r backdrop-blur-xl bg-black/40 border-white/10"
