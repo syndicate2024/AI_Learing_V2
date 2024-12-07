@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useUser, useClerk } from "@clerk/clerk-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import {
   LayoutDashboard,
   BookOpen,
@@ -242,7 +242,7 @@ const Dashboard = () => {
           }}
         >
           <div className="px-6 mx-auto max-w-7xl">
-            {/* Content for each section will be added here */}
+            <Outlet />
           </div>
         </motion.main>
       </div>
@@ -251,4 +251,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
