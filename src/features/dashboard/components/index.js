@@ -1,1 +1,12 @@
-// Placeholder for future implementation
+export { default as Overview } from './overview/Overview';
+export { default as LearningProgress } from './learning-progress/LearningProgress';
+export { default as Projects } from './projects/Projects';
+export { default as Achievements } from './achievements/Achievements';
+export { default as Activity } from './activity/Activity';
+export { default as DailyLog } from './daily-log/DailyLog';
+export { default as Backup } from './backup/Backup';
+export { default as Challenges } from './challenges/Challenges';
+export { default as Community } from './community/Community';
+export { default as AIAssistant } from './ai-assistant/AIAssistant';
+export { default as Resources } from './resources/Resources';
+export { default as Premium } from './premium/Premium';

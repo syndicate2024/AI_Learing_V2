@@ -11,7 +11,15 @@ import {
   LogOut,
   Settings,
   Menu,
-  User
+  User,
+  Calendar,
+  Save,
+  GraduationCap,
+  Rocket,
+  Users,
+  Brain,
+  BookMarked,
+  Star
 } from "lucide-react";
 import { 
   EnhancedCyberpunkBackground,
@@ -27,6 +35,23 @@ const Dashboard = () => {
   const [showExplosion, setShowExplosion] = useState(false);
   const [activeSection, setActiveSection] = useState("Overview");
   const [showVideo, setShowVideo] = useState(true);
+
+  const menuItems = [
+    // Core Features
+    { icon: LayoutDashboard, title: "Overview", path: "overview" },
+    { icon: GraduationCap, title: "Learning Progress", path: "learning-progress" },
+    { icon: Code2, title: "Projects", path: "projects" },
+    { icon: Trophy, title: "Achievements", path: "achievements" },
+    { icon: Activity, title: "Activity", path: "activity" },
+    { icon: Calendar, title: "Daily Log", path: "daily-log" },
+    { icon: Save, title: "Backup", path: "backup" },
+    // New Features
+    { icon: Rocket, title: "Challenges", path: "challenges" },
+    { icon: Users, title: "Community", path: "community" },
+    { icon: Brain, title: "AI Assistant", path: "ai-assistant" },
+    { icon: BookMarked, title: "Resources", path: "resources" },
+    { icon: Star, title: "Premium", path: "premium" }
+  ];
 
   const handleSignOut = useCallback(() => {
     setShowExplosion(true);
@@ -161,18 +186,11 @@ const Dashboard = () => {
         >
           {isSidebarOpen && (
             <div className="relative z-[1] p-4">
-              {/* Navigation Items */}
               <div className="space-y-3">
-                {[
-                  { icon: LayoutDashboard, title: "Overview" },
-                  { icon: BookOpen, title: "Learning Progress" },
-                  { icon: Code2, title: "Projects" },
-                  { icon: Trophy, title: "Achievements" },
-                  { icon: Activity, title: "Recent Activity" }
-                ].map((item) => (
+                {menuItems.map((item) => (
                   <motion.button
                     key={item.title}
-                    onClick={() => handleNavigation(item.title)}
+                    onClick={() => handleNavigation(item.path)}
                     className={`flex items-center w-full gap-4 px-5 py-4 transition-all rounded-lg group relative overflow-hidden
                               ${item.title === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
                     whileHover={{ 
@@ -192,7 +210,7 @@ const Dashboard = () => {
                                   item.title === activeSection ? "opacity-10" : "group-hover:opacity-5"
                                 }`} />
                     <item.icon
-                      className={`w-6 h-6 transition-colors
+                      className={`w-6 h-6 transition-colors duration-300
                                 ${
                                   item.title === activeSection
                                     ? "text-[#00F6FF]"
@@ -200,7 +218,7 @@ const Dashboard = () => {
                                 }`}
                     />
                     <span
-                      className={`font-medium tracking-wide font-exo text-lg transition-colors
+                      className={`font-medium tracking-wide font-exo text-lg whitespace-nowrap transition-colors duration-300
                                 ${
                                   item.title === activeSection
                                     ? "bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-transparent"
@@ -233,3 +251,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
