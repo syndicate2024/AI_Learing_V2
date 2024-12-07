@@ -39,11 +39,11 @@ const Dashboard = () => {
   }, [signOut, navigate]);
 
   const handleNavigation = useCallback((section) => {
+    setActiveSection(section);
     setShowExplosion(true);
     setTimeout(() => {
-      setActiveSection(section);
       setShowExplosion(false);
-    }, 1000);
+    }, 300);
   }, []);
 
   const handleVideoComplete = () => {
@@ -75,15 +75,15 @@ const Dashboard = () => {
       {/* Main Content Container - mid layer */}
       <div className="relative z-10">
         {/* Top Navigation Bar */}
-        <nav className="fixed top-0 left-0 right-0 z-30 px-4 py-3 border-b bg-black/40 backdrop-blur-xl border-white/10">
+        <nav className="fixed top-0 right-0 left-0 z-30 px-4 py-3 border-b backdrop-blur-xl bg-black/40 border-white/10">
           <div className="relative z-[1] flex items-center justify-between mx-auto max-w-7xl">
             {/* Menu Toggle & Title */}
-            <div className="flex items-center gap-4">
+            <div className="flex gap-4 items-center">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="relative p-2 overflow-hidden transition-colors rounded-full group"
+                className="overflow-hidden relative p-2 rounded-full transition-colors group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 group-hover:opacity-20 transition-opacity" />
                 <Menu className="w-6 h-6 text-white" />
@@ -105,14 +105,14 @@ const Dashboard = () => {
             </div>
 
             {/* User Controls */}
-            <div className="flex items-center gap-4">
+            <div className="flex gap-4 items-center">
               <motion.div
-                className="flex items-center gap-2 p-2 border rounded-lg bg-black/20 backdrop-blur-lg border-white/10"
+                className="flex gap-2 items-center p-2 rounded-lg border backdrop-blur-lg bg-black/20 border-white/10"
                 whileHover={{ scale: 1.02 }}
               >
                 <div className="relative w-10 h-10 p-[2px] rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] group">
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 group-hover:opacity-20 transition-opacity" />
-                  <div className="flex items-center justify-center w-full h-full bg-black rounded-full">
+                  <div className="flex justify-center items-center w-full h-full bg-black rounded-full">
                     <User size={20} className="text-[#00F6FF]" />
                   </div>
                 </div>
@@ -124,7 +124,7 @@ const Dashboard = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative p-2 overflow-hidden transition-all border rounded-full group bg-black/20 backdrop-blur-lg border-white/10"
+                className="overflow-hidden relative p-2 rounded-full border backdrop-blur-lg transition-all group bg-black/20 border-white/10"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 group-hover:opacity-20 transition-opacity" />
                 <Settings size={20} className="text-white/80 group-hover:text-white" />
@@ -134,7 +134,7 @@ const Dashboard = () => {
                 onClick={handleSignOut}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative px-4 py-2 overflow-hidden rounded-full group"
+                className="overflow-hidden relative px-4 py-2 rounded-full group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF]" />
                 <div className="absolute inset-[1px] bg-black rounded-full transition-opacity group-hover:bg-opacity-50" />
@@ -149,17 +149,20 @@ const Dashboard = () => {
 
         {/* Sidebar */}
         <motion.div
-          className="fixed top-0 left-0 z-20 h-full pt-20 border-r bg-black/40 backdrop-blur-xl border-white/10"
+          className="fixed top-0 left-0 z-20 pt-20 h-full border-r backdrop-blur-xl bg-black/40 border-white/10"
           animate={{
-            width: isSidebarOpen ? "240px" : "0px",
+            width: isSidebarOpen ? "280px" : "0px",
             opacity: isSidebarOpen ? 1 : 0,
           }}
-          transition={{ duration: 0.3 }}
+          transition={{ 
+            duration: 0.3,
+            ease: "easeInOut"
+          }}
         >
           {isSidebarOpen && (
             <div className="relative z-[1] p-4">
               {/* Navigation Items */}
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {[
                   { icon: LayoutDashboard, title: "Overview" },
                   { icon: BookOpen, title: "Learning Progress" },
@@ -170,17 +173,26 @@ const Dashboard = () => {
                   <motion.button
                     key={item.title}
                     onClick={() => handleNavigation(item.title)}
-                    className={`flex items-center w-full gap-3 px-4 py-3 transition-all rounded-lg group relative overflow-hidden
+                    className={`flex items-center w-full gap-4 px-5 py-4 transition-all rounded-lg group relative overflow-hidden
                               ${item.title === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
-                    whileHover={{ x: 5 }}
+                    whileHover={{ 
+                      x: 5,
+                      transition: { duration: 0.1 }
+                    }}
                     whileTap={{ scale: 0.98 }}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{
+                      duration: 0.2,
+                      delay: 0
+                    }}
                   >
                     <div className={`absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 
                                 transition-opacity duration-300 ${
                                   item.title === activeSection ? "opacity-10" : "group-hover:opacity-5"
                                 }`} />
                     <item.icon
-                      className={`w-5 h-5 transition-colors
+                      className={`w-6 h-6 transition-colors
                                 ${
                                   item.title === activeSection
                                     ? "text-[#00F6FF]"
@@ -188,7 +200,7 @@ const Dashboard = () => {
                                 }`}
                     />
                     <span
-                      className={`font-medium tracking-wide font-exo transition-colors
+                      className={`font-medium tracking-wide font-exo text-lg transition-colors
                                 ${
                                   item.title === activeSection
                                     ? "bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-transparent"
@@ -208,7 +220,7 @@ const Dashboard = () => {
         <motion.main
           className="relative z-10 pt-24 transition-all duration-300"
           animate={{
-            marginLeft: isSidebarOpen ? "240px" : "0px",
+            marginLeft: isSidebarOpen ? "280px" : "0px",
           }}
         >
           <div className="px-6 mx-auto max-w-7xl">
