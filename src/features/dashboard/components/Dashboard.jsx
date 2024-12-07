@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useUser, useClerk } from "@clerk/clerk-react";
 import { useNavigate, Outlet } from "react-router-dom";
@@ -31,10 +31,20 @@ const Dashboard = () => {
   const { user } = useUser();
   const { signOut } = useClerk();
   const navigate = useNavigate();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    const saved = localStorage.getItem('dashboardSidebarOpen');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
   const [showExplosion, setShowExplosion] = useState(false);
   const [activeSection, setActiveSection] = useState("Overview");
   const [showVideo, setShowVideo] = useState(true);
+  const [isAnimationRunning, setIsAnimationRunning] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Update localStorage when sidebar state changes
+  useEffect(() => {
+    localStorage.setItem('dashboardSidebarOpen', JSON.stringify(isSidebarOpen));
+  }, [isSidebarOpen]);
 
   const menuItems = [
     // Core Features
@@ -65,10 +75,12 @@ const Dashboard = () => {
 
   const handleNavigation = useCallback((section) => {
     setActiveSection(section);
-    setShowExplosion(true);
-    setTimeout(() => {
-      setShowExplosion(false);
-    }, 300);
+    navigate(section, { replace: true });
+  }, [navigate]);
+
+  // Separate menu button handler
+  const handleMenuClick = useCallback(() => {
+    setIsSidebarOpen(prev => !prev);
   }, []);
 
   const handleVideoComplete = () => {
@@ -92,8 +104,13 @@ const Dashboard = () => {
 
       {/* Explosion Effect - highest layer */}
       {showExplosion && (
-        <div className="fixed inset-0 z-50">
-          <ExplosionEffect />
+        <div className="fixed inset-0 z-50 pointer-events-none">
+          <ExplosionEffect 
+            onComplete={() => {
+                setShowExplosion(false);
+                setIsAnimating(false);
+            }} 
+          />
         </div>
       )}
 
@@ -119,8 +136,8 @@ const Dashboard = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                  className="overflow-hidden relative p-2 rounded-full transition-colors group ml-2"
+                  onClick={handleMenuClick}
+                  className="overflow-hidden relative p-2 ml-2 rounded-full transition-colors group"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 group-hover:opacity-20 transition-opacity" />
                   <Menu className="w-6 h-6 text-[#00F6FF]" />
@@ -179,7 +196,7 @@ const Dashboard = () => {
         {/* Curved Neon Line */}
         {!showVideo && (
           <motion.div
-            className="fixed top-0 left-0 right-0 z-50"
+            className="fixed top-0 right-0 left-0 z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
@@ -202,7 +219,7 @@ const Dashboard = () => {
         >
           {isSidebarOpen && (
             <div className="relative z-[1] flex flex-col h-full pt-32 pb-6">
-              <div className="flex-1 flex flex-col justify-between p-3">
+              <div className="flex flex-col flex-1 justify-between p-3">
                 {/* Core Features Group */}
                 <div className="space-y-2">
                   {menuItems.slice(0, 7).map((item) => (
@@ -210,27 +227,21 @@ const Dashboard = () => {
                       key={item.title}
                       onClick={() => handleNavigation(item.path)}
                       className={`flex items-center w-full gap-3 px-4 py-2.5 transition-all rounded-lg group relative overflow-hidden
-                                ${item.title === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
+                                ${item.path === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
                       whileHover={{ 
                         x: 5,
                         transition: { duration: 0.1 }
                       }}
                       whileTap={{ scale: 0.98 }}
-                      initial={{ x: -20, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{
-                        duration: 0.2,
-                        delay: 0
-                      }}
                     >
                       <div className={`absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 
                                   transition-opacity duration-300 ${
-                                    item.title === activeSection ? "opacity-10" : "group-hover:opacity-5"
+                                    item.path === activeSection ? "opacity-10" : "group-hover:opacity-5"
                                   }`} />
                       <item.icon
                         className={`w-5 h-5 transition-colors duration-300
                                   ${
-                                    item.title === activeSection
+                                    item.path === activeSection
                                       ? "text-[#00F6FF]"
                                       : "text-white/70 group-hover:text-[#00F6FF]"
                                   }`}
@@ -238,7 +249,7 @@ const Dashboard = () => {
                       <span
                         className={`font-medium tracking-wide font-exo text-base whitespace-nowrap transition-colors duration-300
                                   ${
-                                    item.title === activeSection
+                                    item.path === activeSection
                                       ? "bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-transparent"
                                       : "text-white/70 group-hover:text-white"
                                   }`}
@@ -250,33 +261,27 @@ const Dashboard = () => {
                 </div>
 
                 {/* Additional Features Group */}
-                <div className="space-y-2 mt-4">
+                <div className="mt-4 space-y-2">
                   {menuItems.slice(7).map((item) => (
                     <motion.button
                       key={item.title}
                       onClick={() => handleNavigation(item.path)}
                       className={`flex items-center w-full gap-3 px-4 py-2.5 transition-all rounded-lg group relative overflow-hidden
-                                ${item.title === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
+                                ${item.path === activeSection ? "bg-white/10" : "hover:bg-white/5"}`}
                       whileHover={{ 
                         x: 5,
                         transition: { duration: 0.1 }
                       }}
                       whileTap={{ scale: 0.98 }}
-                      initial={{ x: -20, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{
-                        duration: 0.2,
-                        delay: 0
-                      }}
                     >
                       <div className={`absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 
                                   transition-opacity duration-300 ${
-                                    item.title === activeSection ? "opacity-10" : "group-hover:opacity-5"
+                                    item.path === activeSection ? "opacity-10" : "group-hover:opacity-5"
                                   }`} />
                       <item.icon
                         className={`w-5 h-5 transition-colors duration-300
                                   ${
-                                    item.title === activeSection
+                                    item.path === activeSection
                                       ? "text-[#00F6FF]"
                                       : "text-white/70 group-hover:text-[#00F6FF]"
                                   }`}
@@ -284,7 +289,7 @@ const Dashboard = () => {
                       <span
                         className={`font-medium tracking-wide font-exo text-base whitespace-nowrap transition-colors duration-300
                                   ${
-                                    item.title === activeSection
+                                    item.path === activeSection
                                       ? "bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-transparent"
                                       : "text-white/70 group-hover:text-white"
                                   }`}
