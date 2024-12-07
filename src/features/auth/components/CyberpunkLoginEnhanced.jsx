@@ -496,7 +496,7 @@ const CyberpunkLoginEnhanced = () => {
 
               <div className="mb-8 text-center">
                 <motion.h1
-                  className="mb-2 text-3xl font-bold tracking-wider text-white font-orbitron"
+                  className="mb-2 text-4xl font-bold tracking-wider text-white font-orbitron"
                   style={{ textShadow: "0 0 10px rgba(0,246,255,0.5)" }}
                   animate={{
                     textShadow: [
@@ -509,7 +509,7 @@ const CyberpunkLoginEnhanced = () => {
                 >
                   EMPOWER YOUR SKILLS
                 </motion.h1>
-                <p className="bg-gradient-to-r font-exo from-[#FF2E97] to-[#00F6FF] bg-clip-text text-3xl tracking-widest text-transparent font-semibold">
+                <p className="bg-gradient-to-r font-exo from-[#FF2E97] to-[#00F6FF] bg-clip-text text-2xl tracking-widest text-transparent font-semibold">
                   LEARN • BUILD • GROW
                 </p>
               </div>
@@ -793,7 +793,7 @@ const CyberpunkLoginEnhanced = () => {
                   bottom: '-8rem'
                 }}
               >
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron text-2xl">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron text-3xl">
                   INITIALIZING
                 </span>
               </motion.div>
