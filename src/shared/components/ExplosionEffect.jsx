@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-const ExplosionEffect = ({ onComplete }) => {
+export const ExplosionEffect = ({ onComplete }) => {
   const containerRef = useRef(null);
   const animationRef = useRef(null);
 
@@ -121,4 +121,5 @@ const ExplosionEffect = ({ onComplete }) => {
   );
 };
 
+// Also add default export to maintain compatibility
 export default ExplosionEffect;

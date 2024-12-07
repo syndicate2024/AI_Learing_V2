@@ -32,6 +32,8 @@ const DashboardLogo = () => {
   const [nextLogoIndex, setNextLogoIndex] = useState(1);
   const [logos, setLogos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [nextLogoPreloaded, setNextLogoPreloaded] = useState(false);
 
   useEffect(() => {
     const getLogos = async () => {
@@ -60,25 +62,48 @@ const DashboardLogo = () => {
     getLogos();
   }, []);
 
+  // Preload next logo
+  useEffect(() => {
+    if (logos.length === 0) return;
+
+    const preloadNext = async () => {
+      setNextLogoPreloaded(false);
+      try {
+        await preloadImage(logos[nextLogoIndex]);
+        setNextLogoPreloaded(true);
+      } catch (error) {
+        console.error('Failed to preload next logo:', error);
+      }
+    };
+
+    preloadNext();
+  }, [nextLogoIndex, logos]);
+
   useEffect(() => {
     if (logos.length === 0) return;
 
     const interval = setInterval(() => {
-      setCurrentLogoIndex((prev) => {
-        const next = (prev + 1) % logos.length;
-        setNextLogoIndex((next + 1) % logos.length);
-        return next;
-      });
+      if (!nextLogoPreloaded) return; // Don't transition if next logo isn't ready
+
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentLogoIndex((prev) => {
+          const next = (prev + 1) % logos.length;
+          setNextLogoIndex((next + 1) % logos.length);
+          return next;
+        });
+        setIsTransitioning(false);
+      }, 1000);
     }, LOGO_CHANGE_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [logos.length]);
+  }, [logos.length, nextLogoPreloaded]);
 
   if (isLoading || logos.length === 0) {
     return (
-      <div className="flex items-center justify-center h-[300px] pt-3">
+      <div className="w-full h-full flex items-center justify-center">
         <motion.div 
-          className="w-[160px] h-[160px] rounded-full bg-black border-2 border-[#00F6FF]"
+          className="w-full h-full rounded-full bg-black border-2 border-[#00F6FF]"
           animate={{
             opacity: [0.3, 0.7, 0.3],
             boxShadow: [
@@ -98,21 +123,32 @@ const DashboardLogo = () => {
   }
 
   return (
-    <div className="flex items-center justify-center h-[300px] pt-3">
+    <div className="w-full h-full flex items-center justify-center">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentLogoIndex}
           initial={{ opacity: 0, scale: 0.8, rotate: -180 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          exit={{ opacity: 0, scale: 0.8, rotate: 180 }}
-          transition={{ duration: 1, ease: "easeInOut" }}
-          className="relative w-[200px] h-[200px]"
+          animate={{ 
+            opacity: 1, 
+            scale: 1, 
+            rotate: 0,
+          }}
+          exit={{ 
+            opacity: 0.5, // Keep some opacity during exit
+            scale: 0.9,
+            rotate: 180,
+          }}
+          transition={{ 
+            duration: 1.5,
+            ease: "easeInOut"
+          }}
+          className="relative w-full h-full"
         >
           {/* Main container with all effects */}
           <div className="absolute inset-0 flex items-center justify-center">
             {/* Outer glow and border */}
             <motion.div
-              className="absolute w-[160px] h-[160px] rounded-full"
+              className="absolute w-full h-full rounded-full"
               style={{
                 background: 'black',
                 boxShadow: `
@@ -150,7 +186,7 @@ const DashboardLogo = () => {
 
             {/* Image container */}
             <div 
-              className="absolute w-[160px] h-[160px] rounded-full overflow-hidden"
+              className="absolute w-full h-full rounded-full overflow-hidden"
               style={{ transform: 'scale(1.01)' }}
             >
               <AnimatePresence mode="wait" initial={false}>
@@ -159,10 +195,10 @@ const DashboardLogo = () => {
                   className="w-full h-full"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
+                  exit={{ opacity: 0.5 }} // Keep some opacity during exit
                   transition={{ 
-                    duration: 0.5,
-                    exit: { duration: 0.5 },
+                    duration: 1,
+                    exit: { duration: 1 },
                     crossfade: true 
                   }}
                   style={{
@@ -177,11 +213,10 @@ const DashboardLogo = () => {
                   <img
                     src={logos[currentLogoIndex]}
                     alt="Cyberpunk Logo"
+                    className={`absolute w-full h-full object-cover transition-transform duration-1000 ${
+                      isTransitioning ? 'scale-110' : 'scale-100'
+                    }`}
                     style={{
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
                       transform: 'scale(1.2)',
                     }}
                     onError={() => {
@@ -197,7 +232,11 @@ const DashboardLogo = () => {
                 <img
                   src={logos[nextLogoIndex]}
                   alt="Preload Next"
-                  onError={() => console.error(`Error preloading next logo: ${logos[nextLogoIndex]}`)}
+                  onLoad={() => setNextLogoPreloaded(true)}
+                  onError={() => {
+                    console.error(`Error preloading next logo: ${logos[nextLogoIndex]}`);
+                    setNextLogoIndex((prev) => (prev + 1) % logos.length);
+                  }}
                 />
               </div>
             </div>

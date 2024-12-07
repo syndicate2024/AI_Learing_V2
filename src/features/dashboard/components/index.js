@@ -10,3 +10,6 @@ export { default as Community } from './community/Community';
 export { default as AIAssistant } from './ai-assistant/AIAssistant';
 export { default as Resources } from './resources/Resources';
 export { default as Premium } from './premium/Premium';
+export { default as Dashboard } from './Dashboard';
+export { default as DashboardNavbar } from './DashboardNavbar';
+export { default as DashboardSidebar } from './DashboardSidebar';
