@@ -51,14 +51,14 @@ const GlitchEffect = () => (
 );
 
 const HologramOverlay = () => (
-  <div className="absolute inset-0 hologram pointer-events-none opacity-30" />
+  <div className="absolute inset-0 opacity-30 pointer-events-none hologram" />
 );
 
 const InteractiveGlow = ({ mouseX, mouseY }) => {
   const size = 400;
   return (
     <motion.div
-      className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 mix-blend-soft-light"
+      className="absolute mix-blend-soft-light -translate-x-1/2 -translate-y-1/2 pointer-events-none"
       style={{
         width: size,
         height: size,
@@ -126,9 +126,11 @@ const VideoBackground = ({ isLoginScreen, onVideoComplete }) => {
 
     const handleKeyPress = (e) => {
       // Only show effects for actual keys (not modifiers, etc)
-      if (e.key.length !== 1) return;
+      if (e.key?.length !== 1) return;
 
-      const rect = container.getBoundingClientRect();
+      const rect = container?.getBoundingClientRect();
+      if (!rect) return;
+
       const randomX = Math.random() * rect.width;
       const randomY = Math.random() * rect.height;
 
@@ -188,7 +190,7 @@ const VideoBackground = ({ isLoginScreen, onVideoComplete }) => {
   };
 
   return (
-    <div ref={containerRef} className="fixed inset-0 w-full h-full overflow-hidden">
+    <div ref={containerRef} className="overflow-hidden fixed inset-0 w-full h-full">
       <AnimatePresence mode="wait">
         <motion.div
           key="video-container"
@@ -260,7 +262,7 @@ const VideoBackground = ({ isLoginScreen, onVideoComplete }) => {
           
           <div className="absolute inset-0 pointer-events-none bg-scanline opacity-[0.03]" />
 
-          <div className="absolute inset-0 pointer-events-none opacity-20">
+          <div className="absolute inset-0 opacity-20 pointer-events-none">
             <DataStreams />
           </div>
         </motion.div>

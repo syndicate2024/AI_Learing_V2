@@ -6,8 +6,10 @@ import { ExplosionEffect } from '../../../shared/components';
 import { useSignIn, useUser } from "@clerk/clerk-react";
 import PropTypes from 'prop-types';
 import { FcGoogle } from 'react-icons/fc';
-import VideoBackground from '../../../shared/components/VideoBackground';
+import { VideoBackground } from '../../../shared/components';
 import { config } from '../../../core/config';
+import { LoadingScreen } from '../../../shared/components/ui';
+import { CyberpunkError } from '../../../shared/components/ui';
 
 // Error Message Component
 const ErrorMessage = ({ message }) => (
@@ -96,6 +98,7 @@ const CyberpunkLoginEnhanced = () => {
     setActive: setActiveSession 
   } = useSignIn();
 
+  // Force loading state to true initially
   const [isLoading, setIsLoading] = useState(true);
   const [showExplosion, setShowExplosion] = useState(false);
   const [error, setError] = useState(null);
@@ -115,6 +118,51 @@ const CyberpunkLoginEnhanced = () => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // Refresh image preview when location changes
+  useEffect(() => {
+    const saved = localStorage.getItem('userProfileImage');
+    setImagePreview(saved || null);
+  }, [location]);
+
+  // Enhanced loading state handling
+  useEffect(() => {
+    const minimumLoadingTime = 3000;
+    setIsLoading(true); // Always start with loading true
+
+    const timer = setTimeout(() => {
+      if (userLoaded && signInLoaded) {
+        if (isSignedIn) {
+          // If already signed in, still show loading before navigation
+          setTimeout(() => {
+            setShowExplosion(true);
+            setTimeout(() => {
+              navigate('/dashboard');
+            }, 2000);
+          }, minimumLoadingTime);
+        } else {
+          setIsLoading(false);
+        }
+      }
+    }, minimumLoadingTime);
+
+    return () => clearTimeout(timer);
+  }, [userLoaded, signInLoaded, isSignedIn, navigate]);
+
+  // Check if already signed in
+  useEffect(() => {
+    if (!userLoaded || !signInLoaded) return;
+    
+    if (isSignedIn) {
+      setIsLoading(true); // Ensure loading shows
+      setTimeout(() => {
+        setShowExplosion(true);
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 2000);
+      }, 1000);
+    }
+  }, [userLoaded, signInLoaded, isSignedIn, navigate]);
 
   const clearCredentials = () => {
     setCredentials({
@@ -245,35 +293,6 @@ const CyberpunkLoginEnhanced = () => {
     }
   }, [location.pathname, clerkSignIn, setActiveSession, navigate]);
 
-  // Handle initial loading state
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (userLoaded && signInLoaded) {
-        setIsLoading(false);
-      }
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [userLoaded, signInLoaded]);
-
-  // Check if already signed in
-  useEffect(() => {
-    const checkAuth = async () => {
-      if (!userLoaded || !signInLoaded) return;
-      
-      try {
-        if (isSignedIn) {
-          console.log("User is already signed in, redirecting to dashboard");
-          navigate('/dashboard');
-        }
-      } catch (err) {
-        console.error("Auth check error:", err);
-        setError("Session verification failed. Please try logging in again.");
-      }
-    };
-    checkAuth();
-  }, [userLoaded, signInLoaded, isSignedIn, navigate]);
-
   const handleGoogleLogin = async () => {
     try {
       setIsGoogleLoading(true);
@@ -323,41 +342,44 @@ const CyberpunkLoginEnhanced = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
+    setIsLoading(true); // Ensure loading shows on login attempt
     
     try {
-      if (isSignedIn) {
-        navigate('/dashboard');
-        return;
+      if (!clerkSignIn) {
+        throw new Error("Authentication not initialized");
       }
-
+      
       console.log("Attempting sign in...");
       const result = await clerkSignIn.create({
         identifier: credentials.email,
         password: credentials.password,
       });
 
+      console.log("Sign in result:", result);
+
       if (result.status === "complete") {
         await setActiveSession({ session: result.createdSessionId });
-        
-        if (credentials.rememberMe) {
-          localStorage.setItem('rememberedCredentials', JSON.stringify({
-            email: credentials.email,
-            rememberMe: true
-          }));
-        } else {
-          clearCredentials();
-        }
-
-        setShowExplosion(true);
         setTimeout(() => {
-          navigate("/dashboard");
+          setShowExplosion(true);
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 2000);
         }, 1000);
+      } else {
+        console.log("Incomplete sign in:", result);
+        throw new Error("Sign in incomplete");
       }
     } catch (err) {
       console.error("Login error:", err);
       if (err.message?.includes('single session mode')) {
-        navigate('/dashboard');
+        setTimeout(() => {
+          setShowExplosion(true);
+          setTimeout(() => {
+            navigate('/dashboard');
+          }, 2000);
+        }, 1000);
       } else {
+        setIsLoading(false);
         setError(err.message || "An error occurred during sign in");
       }
     }

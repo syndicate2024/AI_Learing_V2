@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserPlus, ArrowLeftIcon, EyeIcon, EyeOffIcon } from 'lucide-react';
 import { ExplosionEffect } from '../../../shared/components';
 import VideoBackground from '../../../shared/components/VideoBackground';
+import { CyberpunkError, LoadingScreen } from '../../../shared/components/ui';
 
 const CyberpunkRegistration = () => {
   const navigate = useNavigate();
