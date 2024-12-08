@@ -38,7 +38,7 @@ const Dashboard = () => {
       signOut()
         .then(() => navigate("/"))
         .catch((error) => console.error("Error signing out:", error));
-    }, 1000);
+    }, 2550);
   }, [signOut, navigate]);
 
   const handleNavigation = useCallback((section) => {
