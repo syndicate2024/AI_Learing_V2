@@ -34,6 +34,7 @@ const DashboardLogo = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [nextLogoPreloaded, setNextLogoPreloaded] = useState(false);
+  const [isGlitching, setIsGlitching] = useState(false);
 
   useEffect(() => {
     const getLogos = async () => {
@@ -82,6 +83,51 @@ const DashboardLogo = () => {
     return () => clearInterval(interval);
   }, [logos.length, nextLogoPreloaded]);
 
+  // Add glitch effect setup
+  useEffect(() => {
+    console.log('Setting up glitch effect...');
+    
+    const triggerGlitch = () => {
+      const roll = Math.random();
+      console.log('Rolling for glitch:', roll);
+      // 30% chance to glitch when timer triggers
+      if (roll < 0.3) {
+        console.log('Glitch triggered!');
+        setIsGlitching(true);
+        setTimeout(() => {
+          setIsGlitching(false);
+          console.log('Glitch ended');
+        }, 300);
+      } else {
+        console.log('No glitch this time');
+      }
+    };
+
+    // Random delay between 5-15 seconds for testing
+    const getRandomDelay = () => Math.random() * (15000 - 5000) + 5000;
+    
+    let glitchTimer;
+    const scheduleNextGlitch = () => {
+      const delay = getRandomDelay();
+      console.log('Next logo glitch check in:', Math.round(delay/1000), 'seconds');
+      glitchTimer = setTimeout(() => {
+        console.log('Checking for glitch...');
+        triggerGlitch();
+        scheduleNextGlitch(); // Schedule next glitch
+      }, delay);
+    };
+
+    // Initial glitch check
+    console.log('Starting first glitch check...');
+    triggerGlitch();
+    scheduleNextGlitch();
+
+    return () => {
+      console.log('Cleaning up glitch effect...');
+      if (glitchTimer) clearTimeout(glitchTimer);
+    };
+  }, []);
+
   if (isLoading || logos.length === 0) {
     return (
       <div className="w-full h-full flex items-center justify-center">
@@ -108,9 +154,7 @@ const DashboardLogo = () => {
   return (
     <div className="w-full h-full flex items-center justify-center">
       <div className="relative w-full h-full">
-        {/* Main container with all effects */}
         <div className="absolute inset-0 flex items-center justify-center">
-          {/* Outer glow and border */}
           <motion.div
             className="absolute w-full h-full rounded-full"
             style={{
@@ -142,7 +186,16 @@ const DashboardLogo = () => {
                   inset 0 0 100px rgba(255,46,151,0.3)
                 `
               ],
-              rotateY: isTransitioning ? 360 : 0
+              rotateY: isTransitioning ? 360 : 0,
+              x: isGlitching ? [0, -2, 2, -2, 0] : 0,
+              y: isGlitching ? [0, 1, -1, 1, 0] : 0,
+              filter: isGlitching ? [
+                'hue-rotate(0deg) brightness(1)',
+                'hue-rotate(90deg) brightness(1.2)',
+                'hue-rotate(-90deg) brightness(0.8)',
+                'hue-rotate(45deg) brightness(1.1)',
+                'hue-rotate(0deg) brightness(1)'
+              ] : 'hue-rotate(0deg) brightness(1)'
             }}
             transition={{
               boxShadow: {
@@ -153,19 +206,23 @@ const DashboardLogo = () => {
               rotateY: {
                 duration: 1,
                 ease: "easeInOut"
-              }
+              },
+              x: { duration: 0.3 },
+              y: { duration: 0.3 },
+              filter: { duration: 0.3 }
             }}
           >
-            {/* Image container */}
             <div 
               className="absolute w-full h-full rounded-full overflow-hidden"
               style={{ transform: 'scale(1.01)' }}
             >
-              {/* Current Logo */}
               <motion.div
                 className="absolute inset-0"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                animate={{ 
+                  opacity: 1,
+                  scale: isGlitching ? [1, 1.02, 0.98, 1.01, 1] : 1
+                }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 1 }}
               >
@@ -181,7 +238,6 @@ const DashboardLogo = () => {
                 />
               </motion.div>
 
-              {/* Next Logo (preloaded and ready for transition) */}
               {isTransitioning && nextLogoPreloaded && (
                 <motion.div
                   className="absolute inset-0"
@@ -198,6 +254,22 @@ const DashboardLogo = () => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1 }}
                   />
+                </motion.div>
+              )}
+
+              {/* Glitch Overlay */}
+              {isGlitching && (
+                <motion.div
+                  className="absolute inset-0 mix-blend-overlay"
+                  initial={{ opacity: 0 }}
+                  animate={{ 
+                    opacity: [0, 0.1, 0, 0.1, 0],
+                    x: [-2, 2, -2, 2, 0],
+                    scaleX: [1, 1.02, 0.98, 1.02, 1]
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="w-full h-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF]" />
                 </motion.div>
               )}
 
