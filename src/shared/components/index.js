@@ -11,4 +11,6 @@ export { default as CyberpunkAchievementEffect } from './CyberpunkAchievementEff
 export { default as FireworksAchievementEffect } from './FireworksAchievementEffect';
 export { default as MatrixRainAchievementEffect } from './MatrixRainAchievementEffect';
 export { default as CyberVortexAchievementEffect } from './CyberVortexAchievementEffect';
+export { default as NeuralNetworkAchievementEffect } from './NeuralNetworkAchievementEffect';
+export { default as DataStormAchievementEffect } from './DataStormAchievementEffect';
 // Add other component exports as needed 

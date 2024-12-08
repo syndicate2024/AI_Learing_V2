@@ -4,9 +4,10 @@ import {
   CyberpunkAchievementEffect, 
   FireworksAchievementEffect,
   MatrixRainAchievementEffect,
-  CyberVortexAchievementEffect
+  CyberVortexAchievementEffect,
+  NeuralNetworkAchievementEffect,
+  DataStormAchievementEffect
 } from '../../../../shared/components';
-import { Trophy } from 'lucide-react';
 
 const achievementData = [
   {
@@ -42,20 +43,20 @@ const achievementData = [
     icon: "🌀"
   },
   {
-    title: "COMING SOON",
-    description: "Neural Network Mastery",
-    effect: "none",
+    title: "NEURAL MASTER",
+    description: "Neural Network Mastery Achieved",
+    effect: "neural",
     progress: 45,
-    theme: "from-gray-400 to-gray-600",
+    theme: "from-[#9D00FF] to-[#FF00FF]",
     icon: "🧠"
   },
   {
-    title: "COMING SOON",
-    description: "Future Achievement",
-    effect: "none",
+    title: "DATA STORM",
+    description: "Master of the Digital Tempest",
+    effect: "storm",
     progress: 30,
-    theme: "from-gray-400 to-gray-600",
-    icon: "🔮"
+    theme: "from-[#00FFFF] to-[#4169E1]",
+    icon: "⚡"
   }
 ];
 
@@ -101,6 +102,18 @@ const Achievements = () => {
       />
       <CyberVortexAchievementEffect 
         isVisible={activeAchievement?.effect === 'vortex'}
+        onComplete={handleAchievementComplete}
+        achievementTitle={activeAchievement?.title}
+        achievementDescription={activeAchievement?.description}
+      />
+      <NeuralNetworkAchievementEffect 
+        isVisible={activeAchievement?.effect === 'neural'}
+        onComplete={handleAchievementComplete}
+        achievementTitle={activeAchievement?.title}
+        achievementDescription={activeAchievement?.description}
+      />
+      <DataStormAchievementEffect 
+        isVisible={activeAchievement?.effect === 'storm'}
         onComplete={handleAchievementComplete}
         achievementTitle={activeAchievement?.title}
         achievementDescription={activeAchievement?.description}
