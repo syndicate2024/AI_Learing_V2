@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
@@ -59,9 +59,12 @@ const CyberpunkAchievementEffect = ({
 
         const colorChoice = Math.random();
         const color = new THREE.Color(
-          colorChoice < 0.33 ? '#FF2E97' : 
-          colorChoice < 0.66 ? '#00F6FF' : 
-          '#FFD700'
+          colorChoice < 0.2 ? '#FF2E97' :  // Neon Pink
+          colorChoice < 0.4 ? '#00F6FF' :  // Neon Blue
+          colorChoice < 0.6 ? '#FFD700' :  // Gold
+          colorChoice < 0.8 ? '#66FFFF' :  // Cyan
+          colorChoice < 0.9 ? '#FF00FF' :  // Magenta
+          '#50FF00'  // Neon Green
         );
         colors[i * 3] = color.r;
         colors[i * 3 + 1] = color.g;
@@ -114,23 +117,33 @@ const CyberpunkAchievementEffect = ({
 
       const animate = () => {
         const elapsedTime = (Date.now() - startTime) / 1000;
-        const DURATION = 4.0;
+        const DURATION = 8.0;
+        const FADE_START = 4.0;
         
         if (elapsedTime < DURATION) {
           const phase = elapsedTime / DURATION;
           const positions = particles.geometry.attributes.position.array;
           
+          const speedMultiplier = Math.max(0.1, 1 - (elapsedTime / DURATION) * 0.9);
+          
           for(let i = 0; i < positions.length; i += 3) {
-            positions[i] += velocities[i] * (1 - phase) * 0.3;
-            positions[i + 1] += velocities[i + 1] * (1 - phase) * 0.3;
-            positions[i + 2] += velocities[i + 2] * (1 - phase) * 0.3;
+            positions[i] += velocities[i] * (1 - phase) * 0.3 * speedMultiplier;
+            positions[i + 1] += velocities[i + 1] * (1 - phase) * 0.3 * speedMultiplier;
+            positions[i + 2] += velocities[i + 2] * (1 - phase) * 0.3 * speedMultiplier;
           }
           
           particles.geometry.attributes.position.needsUpdate = true;
           particles.material.uniforms.time.value = elapsedTime;
           
-          particles.rotation.y += 0.006;
-          particles.rotation.x += 0.003;
+          particles.rotation.y += 0.006 * speedMultiplier;
+          particles.rotation.x += 0.003 * speedMultiplier;
+          
+          let opacity = 1.0;
+          if (elapsedTime > FADE_START) {
+            const fadeProgress = (elapsedTime - FADE_START) / (DURATION - FADE_START);
+            opacity = Math.cos(fadeProgress * Math.PI * 0.5);
+          }
+          particles.material.opacity = opacity;
           
           renderer.render(scene, camera);
           animationRef.current = requestAnimationFrame(animate);
@@ -185,7 +198,7 @@ const CyberpunkAchievementEffect = ({
       <AnimatePresence>
         {isVisible && (
           <>
-            {/* Dark overlay */}
+            {/* Dark overlay with longer fade */}
             <motion.div
               className="fixed inset-0"
               style={{ 
@@ -195,7 +208,7 @@ const CyberpunkAchievementEffect = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 1.2 }}
             />
 
             {/* Three.js container */}
@@ -211,7 +224,7 @@ const CyberpunkAchievementEffect = ({
               }}
             />
 
-            {/* Achievement Text Overlay */}
+            {/* Achievement Text Overlay with longer exit animation */}
             <motion.div
               className="fixed inset-0 flex items-center justify-center"
               style={{ 
@@ -219,8 +232,12 @@ const CyberpunkAchievementEffect = ({
               }}
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 1.2, y: -20 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              exit={{ opacity: 0, scale: 1.1, y: -20 }}
+              transition={{ 
+                duration: 1.2,
+                exit: { duration: 1.5 },
+                ease: "easeInOut"
+              }}
             >
               <div className="text-center px-4">
                 {/* Main Title */}
@@ -236,7 +253,7 @@ const CyberpunkAchievementEffect = ({
                       '0 0 30px rgba(255,46,151,0.8), 0 0 60px rgba(0,246,255,0.8)',
                     ],
                   }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                  transition={{ duration: 3, repeat: Infinity }}
                 >
                   {achievementTitle}
                 </motion.h1>
@@ -246,7 +263,7 @@ const CyberpunkAchievementEffect = ({
                   className="text-4xl text-white font-exo select-none"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
+                  transition={{ delay: 0.5, duration: 1.0 }}
                 >
                   <span className="bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] bg-clip-text text-transparent"
                     style={{
