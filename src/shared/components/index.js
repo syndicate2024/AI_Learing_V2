@@ -13,4 +13,5 @@ export { default as MatrixRainAchievementEffect } from './MatrixRainAchievementE
 export { default as CyberVortexAchievementEffect } from './CyberVortexAchievementEffect';
 export { default as NeuralNetworkAchievementEffect } from './NeuralNetworkAchievementEffect';
 export { default as DataStormAchievementEffect } from './DataStormAchievementEffect';
+export { default as GrandMasterAchievementEffect } from './GrandMasterAchievementEffect';
 // Add other component exports as needed 

@@ -6,7 +6,8 @@ import {
   MatrixRainAchievementEffect,
   CyberVortexAchievementEffect,
   NeuralNetworkAchievementEffect,
-  DataStormAchievementEffect
+  DataStormAchievementEffect,
+  GrandMasterAchievementEffect
 } from '../../../../shared/components';
 
 const achievementData = [
@@ -60,6 +61,15 @@ const achievementData = [
   }
 ];
 
+const grandMasterAchievement = {
+  title: "GRAND MASTER",
+  description: "The pinnacle of digital mastery. A true cyberpunk legend.",
+  effect: "grandMaster",
+  progress: 100,
+  theme: "from-[#FFD700] via-[#FF2E97] to-[#4169E1]",
+  icon: "🏆"
+};
+
 const Achievements = () => {
   const [activeAchievement, setActiveAchievement] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -70,9 +80,12 @@ const Achievements = () => {
     setIsButtonDisabled(true);
     setActiveAchievement(achievement);
     
+    // Longer timeout for grand master achievement
+    const timeout = achievement.effect === 'grandMaster' ? 24000 : 8000;
+    
     setTimeout(() => {
       setIsButtonDisabled(false);
-    }, 8000); // Match the duration of the effects
+    }, timeout);
   }, [isButtonDisabled]);
 
   const handleAchievementComplete = useCallback(() => {
@@ -114,6 +127,12 @@ const Achievements = () => {
       />
       <DataStormAchievementEffect 
         isVisible={activeAchievement?.effect === 'storm'}
+        onComplete={handleAchievementComplete}
+        achievementTitle={activeAchievement?.title}
+        achievementDescription={activeAchievement?.description}
+      />
+      <GrandMasterAchievementEffect
+        isVisible={activeAchievement?.effect === 'grandMaster'}
         onComplete={handleAchievementComplete}
         achievementTitle={activeAchievement?.title}
         achievementDescription={activeAchievement?.description}
@@ -189,6 +208,104 @@ const Achievements = () => {
           </motion.div>
         ))}
       </div>
+
+      {/* Grand Master Achievement Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+        onClick={() => handleAchievementClick(grandMasterAchievement)}
+        className={`
+          relative overflow-hidden rounded-lg border-2 border-[#FFD700] shadow-lg 
+          transition-all duration-300 cursor-pointer mt-8 col-span-full
+          ${isButtonDisabled 
+            ? 'opacity-50 cursor-not-allowed' 
+            : 'hover:shadow-xl hover:scale-105 hover:-translate-y-1'
+          }
+        `}
+        style={{
+          background: 'linear-gradient(to bottom right, rgba(0, 0, 0, 0.97), rgba(0, 0, 0, 0.95))',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.7)'
+        }}
+      >
+        {/* Background Pattern */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `
+              linear-gradient(45deg, #FFD700 25%, transparent 25%),
+              linear-gradient(-45deg, #FF2E97 25%, transparent 25%),
+              linear-gradient(45deg, transparent 75%, #4169E1 75%),
+              linear-gradient(-45deg, transparent 75%, #FFD700 75%)
+            `,
+            backgroundSize: '30px 30px',
+            backgroundPosition: '0 0, 0 15px, 15px -15px, -15px 0px'
+          }}
+        />
+        
+        {/* Animated Glow Effect */}
+        <motion.div 
+          className={`absolute inset-0 bg-gradient-to-r ${grandMasterAchievement.theme} opacity-30`}
+          animate={{
+            opacity: [0.2, 0.4, 0.2],
+            scale: [1, 1.02, 1],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        
+        {/* Content */}
+        <div className="relative z-10 p-8">
+          <div className="flex items-center gap-6 mb-6">
+            <motion.div 
+              className={`w-16 h-16 rounded-full bg-gradient-to-r ${grandMasterAchievement.theme} flex items-center justify-center shadow-lg text-3xl`}
+              animate={{
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            >
+              {grandMasterAchievement.icon}
+            </motion.div>
+            <div>
+              <motion.h3 
+                className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#FF2E97] to-[#4169E1] mb-2"
+                animate={{
+                  textShadow: [
+                    "0 0 20px rgba(255,215,0,0.5)",
+                    "0 0 30px rgba(255,215,0,0.8)",
+                    "0 0 20px rgba(255,215,0,0.5)",
+                  ],
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                {grandMasterAchievement.title}
+              </motion.h3>
+              <p className="text-white/90 text-lg max-w-4xl leading-relaxed">{grandMasterAchievement.description}</p>
+            </div>
+          </div>
+          <div className="w-full bg-black/50 rounded-full h-3 overflow-hidden p-0.5">
+            <motion.div 
+              className={`h-full rounded-full bg-gradient-to-r ${grandMasterAchievement.theme}`}
+              initial={{ width: 0 }}
+              animate={{ width: `${grandMasterAchievement.progress}%` }}
+              transition={{ duration: 1.5, delay: 1 }}
+            />
+          </div>
+        </div>
+
+        {/* Hover Glow */}
+        <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300">
+          <div className={`absolute inset-0 bg-gradient-to-r ${grandMasterAchievement.theme} opacity-30`} />
+        </div>
+      </motion.div>
     </div>
   );
 };
