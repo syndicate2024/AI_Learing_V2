@@ -1,6 +1,11 @@
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { CyberpunkAchievementEffect, FireworksAchievementEffect } from '../../../../shared/components';
+import { 
+  CyberpunkAchievementEffect, 
+  FireworksAchievementEffect,
+  MatrixRainAchievementEffect,
+  CyberVortexAchievementEffect
+} from '../../../../shared/components';
 import { Trophy } from 'lucide-react';
 
 const achievementData = [
@@ -8,37 +13,49 @@ const achievementData = [
     title: "MASTER HACKER",
     description: "You've unlocked the secrets of the matrix!",
     effect: "cyber",
-    progress: 100
+    progress: 100,
+    theme: "from-[#FF2E97] to-[#00F6FF]",
+    icon: "🔓"
   },
   {
     title: "BOOM!!!",
     description: "YOU ARE AWESOME",
     effect: "fireworks",
-    progress: 85
+    progress: 85,
+    theme: "from-[#FFD700] to-[#FF2E97]",
+    icon: "💥"
   },
   {
-    title: "CYBER NINJA",
-    description: "Silent. Swift. Deadly.",
-    effect: "cyber",
-    progress: 75
+    title: "MATRIX MASTER",
+    description: "You've entered the Matrix",
+    effect: "matrix",
+    progress: 75,
+    theme: "from-[#00FF00] to-[#50FF50]",
+    icon: "🌐"
   },
   {
-    title: "BOOM!!!",
-    description: "INCREDIBLE SKILLS!",
-    effect: "fireworks",
-    progress: 65
+    title: "CYBER VORTEX",
+    description: "You've mastered the digital whirlwind",
+    effect: "vortex",
+    progress: 65,
+    theme: "from-[#9D00FF] to-[#FF00FF]",
+    icon: "🌀"
   },
   {
-    title: "DATA WIZARD",
-    description: "Master of the Digital Realm",
-    effect: "cyber",
-    progress: 45
+    title: "COMING SOON",
+    description: "Neural Network Mastery",
+    effect: "none",
+    progress: 45,
+    theme: "from-gray-400 to-gray-600",
+    icon: "🧠"
   },
   {
-    title: "BOOM!!!",
-    description: "UNSTOPPABLE!",
-    effect: "fireworks",
-    progress: 30
+    title: "COMING SOON",
+    description: "Future Achievement",
+    effect: "none",
+    progress: 30,
+    theme: "from-gray-400 to-gray-600",
+    icon: "🔮"
   }
 ];
 
@@ -47,7 +64,7 @@ const Achievements = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const handleAchievementClick = useCallback((achievement) => {
-    if (isButtonDisabled) return;
+    if (isButtonDisabled || achievement.effect === 'none') return;
     
     setIsButtonDisabled(true);
     setActiveAchievement(achievement);
@@ -76,6 +93,18 @@ const Achievements = () => {
         achievementTitle={activeAchievement?.title}
         achievementDescription={activeAchievement?.description}
       />
+      <MatrixRainAchievementEffect 
+        isVisible={activeAchievement?.effect === 'matrix'}
+        onComplete={handleAchievementComplete}
+        achievementTitle={activeAchievement?.title}
+        achievementDescription={activeAchievement?.description}
+      />
+      <CyberVortexAchievementEffect 
+        isVisible={activeAchievement?.effect === 'vortex'}
+        onComplete={handleAchievementComplete}
+        achievementTitle={activeAchievement?.title}
+        achievementDescription={activeAchievement?.description}
+      />
 
       {/* Achievement Cards */}
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -89,9 +118,11 @@ const Achievements = () => {
             className={`
               relative overflow-hidden rounded-lg border-2 border-white/20 shadow-lg 
               transition-all duration-300 cursor-pointer
-              ${isButtonDisabled 
+              ${achievement.effect === 'none' 
                 ? 'opacity-50 cursor-not-allowed' 
-                : 'hover:shadow-xl hover:scale-105 hover:-translate-y-1'
+                : isButtonDisabled 
+                  ? 'opacity-50 cursor-not-allowed' 
+                  : 'hover:shadow-xl hover:scale-105 hover:-translate-y-1'
               }
             `}
             style={{
@@ -115,13 +146,13 @@ const Achievements = () => {
             />
             
             {/* Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#FF2E97]/30 to-[#00F6FF]/30" />
+            <div className={`absolute inset-0 bg-gradient-to-r ${achievement.theme} opacity-30`} />
             
             {/* Content */}
             <div className="relative z-10 p-6">
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] flex items-center justify-center shadow-lg">
-                  <Trophy className="w-6 h-6 text-white" />
+                <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${achievement.theme} flex items-center justify-center shadow-lg text-2xl`}>
+                  {achievement.icon}
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-white">{achievement.title}</h3>
@@ -130,7 +161,7 @@ const Achievements = () => {
               </div>
               <div className="w-full bg-black/50 rounded-full h-2.5 overflow-hidden p-0.5">
                 <motion.div 
-                  className="h-full rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF]"
+                  className={`h-full rounded-full bg-gradient-to-r ${achievement.theme}`}
                   initial={{ width: 0 }}
                   animate={{ width: `${achievement.progress}%` }}
                   transition={{ duration: 1, delay: i * 0.1 }}
@@ -140,7 +171,7 @@ const Achievements = () => {
 
             {/* Hover Glow */}
             <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FF2E97]/30 to-[#00F6FF]/30" />
+              <div className={`absolute inset-0 bg-gradient-to-r ${achievement.theme} opacity-30`} />
             </div>
           </motion.div>
         ))}

@@ -9,4 +9,6 @@ export { default as CyberpunkGrid } from './CyberpunkGrid';
 export { default as PulsingGridOverlay } from './PulsingGridOverlay';
 export { default as CyberpunkAchievementEffect } from './CyberpunkAchievementEffect';
 export { default as FireworksAchievementEffect } from './FireworksAchievementEffect';
+export { default as MatrixRainAchievementEffect } from './MatrixRainAchievementEffect';
+export { default as CyberVortexAchievementEffect } from './CyberVortexAchievementEffect';
 // Add other component exports as needed 
