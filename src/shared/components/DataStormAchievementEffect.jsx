@@ -305,7 +305,7 @@ const DataStormAchievementEffect = ({
 
             {/* Achievement Text Overlay */}
             <motion.div
-              className="fixed inset-0 flex items-center justify-center"
+              className="flex fixed inset-0 justify-center items-center"
               style={{ zIndex: 103 }}
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -316,7 +316,7 @@ const DataStormAchievementEffect = ({
                 ease: "easeInOut"
               }}
             >
-              <div className="text-center px-4">
+              <div className="px-4 text-center">
                 <motion.h1
                   className="text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#00FFFF] to-[#4169E1] font-orbitron mb-6 select-none"
                   style={{
@@ -335,7 +335,7 @@ const DataStormAchievementEffect = ({
                 </motion.h1>
 
                 <motion.div
-                  className="text-4xl text-white font-exo select-none"
+                  className="text-4xl text-white select-none font-exo"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 2.0, duration: 1.0 }}
