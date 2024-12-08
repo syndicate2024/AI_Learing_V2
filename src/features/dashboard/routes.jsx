@@ -1,58 +1,75 @@
 import { Routes, Route } from 'react-router-dom';
-import {
-  Overview,
-  LearningProgress,
-  Projects,
-  Activity,
-  DailyLog,
-  Backup,
-  Challenges,
-  Community,
-  AIAssistant,
-  Resources,
-  Premium,
-  Dashboard,
-} from './components';
 import { lazy, Suspense } from 'react';
+import { Dashboard } from './components';
+import ComingSoon from './components/ComingSoon';
+import PropTypes from 'prop-types';
+import CyberpunkEKGLoader from '../../shared/components/ui/CyberpunkEKGLoader';
 
-// Lazy loaded components
-const LazyAchievements = lazy(() => import('./components/achievements/Achievements'));
-const LazyGrandFinale = lazy(() => import('./components/achievements/GrandFinale'));
+// Delay constant for consistent loading times
+const LOADING_DELAY = 3000; // 3 seconds
 
-// Loading screen component
-const LoadingScreen = () => (
-  <div className="fixed inset-0 bg-[#0A0F1B] flex items-center justify-center z-50">
-    <div className="w-16 h-16 border-4 border-t-[#FF2E97] border-r-[#00F6FF] border-b-[#FF2E97] border-l-[#00F6FF] rounded-full animate-spin" />
-  </div>
+// Helper function to add delay to lazy loading
+const withLoadingDelay = (importFn, name) => 
+  new Promise(resolve => {
+    console.log(`Starting to load ${name}...`);
+    setTimeout(() => {
+      console.log(`Loading ${name} component...`);
+      importFn().then(module => {
+        console.log(`${name} loaded!`);
+        resolve(module);
+      });
+    }, LOADING_DELAY);
+  });
+
+// Only lazy load complex components with consistent delay
+const LazyAchievements = lazy(() => 
+  withLoadingDelay(
+    () => import('./components/achievements/Achievements'),
+    'Achievements'
+  )
 );
+
+const LazyGrandFinale = lazy(() => 
+  withLoadingDelay(
+    () => import('./components/achievements/GrandFinale'),
+    'Grand Finale'
+  )
+);
+
+// Simple component for coming soon pages
+const ComingSoonRoute = ({ title }) => <ComingSoon title={title} />;
+
+ComingSoonRoute.propTypes = {
+  title: PropTypes.string.isRequired
+};
 
 const DashboardRoutes = () => {
   return (
     <Routes>
       {/* Dashboard and its child routes */}
       <Route path="" element={<Dashboard />}>
-        <Route path="overview" element={<Overview />} />
-        <Route path="learning-progress" element={<LearningProgress />} />
-        <Route path="projects" element={<Projects />} />
+        <Route path="overview" element={<ComingSoonRoute title="Overview" />} />
+        <Route path="learning-progress" element={<ComingSoonRoute title="Learning Progress" />} />
+        <Route path="projects" element={<ComingSoonRoute title="Projects" />} />
         <Route path="achievements" element={
-          <Suspense fallback={<LoadingScreen />}>
+          <Suspense fallback={<CyberpunkEKGLoader />}>
             <LazyAchievements />
           </Suspense>
         } />
-        <Route path="activity" element={<Activity />} />
-        <Route path="daily-log" element={<DailyLog />} />
-        <Route path="backup" element={<Backup />} />
-        <Route path="challenges" element={<Challenges />} />
-        <Route path="community" element={<Community />} />
-        <Route path="ai-assistant" element={<AIAssistant />} />
-        <Route path="resources" element={<Resources />} />
-        <Route path="premium" element={<Premium />} />
-        <Route index element={<Overview />} />
+        <Route path="activity" element={<ComingSoonRoute title="Activity" />} />
+        <Route path="daily-log" element={<ComingSoonRoute title="Daily Log" />} />
+        <Route path="backup" element={<ComingSoonRoute title="Backup" />} />
+        <Route path="challenges" element={<ComingSoonRoute title="Challenges" />} />
+        <Route path="community" element={<ComingSoonRoute title="Community" />} />
+        <Route path="ai-assistant" element={<ComingSoonRoute title="AI Assistant" />} />
+        <Route path="resources" element={<ComingSoonRoute title="Resources" />} />
+        <Route path="premium" element={<ComingSoonRoute title="Premium" />} />
+        <Route index element={<ComingSoonRoute title="Overview" />} />
       </Route>
       
       {/* Grand Finale route */}
       <Route path="finale" element={
-        <Suspense fallback={<LoadingScreen />}>
+        <Suspense fallback={<CyberpunkEKGLoader />}>
           <LazyGrandFinale />
         </Suspense>
       } />

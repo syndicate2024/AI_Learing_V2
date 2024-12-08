@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { FcGoogle } from 'react-icons/fc';
 import { VideoBackground } from '../../../shared/components';
 import { config } from '../../../core/config';
-import { LoadingScreen } from '../../../shared/components/ui';
+import { CyberpunkEKGLoader } from '../../../shared/components/ui';
 import { CyberpunkError } from '../../../shared/components/ui';
 
 // Error Message Component
@@ -133,11 +133,15 @@ const CyberpunkLoginEnhanced = () => {
     const timer = setTimeout(() => {
       if (userLoaded && signInLoaded) {
         if (isSignedIn) {
-          // If already signed in, still show loading before navigation
+          // If already signed in, show loading then explosion
           setTimeout(() => {
             setShowExplosion(true);
             setTimeout(() => {
-              navigate('/dashboard');
+              // Show loading screen after explosion
+              setIsLoading(true);
+              setTimeout(() => {
+                navigate('/dashboard');
+              }, 3000);
             }, 2000);
           }, minimumLoadingTime);
         } else {
@@ -158,7 +162,11 @@ const CyberpunkLoginEnhanced = () => {
       setTimeout(() => {
         setShowExplosion(true);
         setTimeout(() => {
-          navigate('/dashboard');
+          // Show loading screen after explosion
+          setIsLoading(true);
+          setTimeout(() => {
+            navigate('/dashboard');
+          }, 3000);
         }, 2000);
       }, 1000);
     }
@@ -362,7 +370,11 @@ const CyberpunkLoginEnhanced = () => {
         setTimeout(() => {
           setShowExplosion(true);
           setTimeout(() => {
-            navigate("/dashboard");
+            // Show loading screen after explosion
+            setIsLoading(true);
+            setTimeout(() => {
+              navigate("/dashboard");
+            }, 3000);
           }, 2000);
         }, 1000);
       } else {
@@ -375,7 +387,11 @@ const CyberpunkLoginEnhanced = () => {
         setTimeout(() => {
           setShowExplosion(true);
           setTimeout(() => {
-            navigate('/dashboard');
+            // Show loading screen after explosion
+            setIsLoading(true);
+            setTimeout(() => {
+              navigate('/dashboard');
+            }, 3000);
           }, 2000);
         }, 1000);
       } else {
@@ -664,173 +680,7 @@ const CyberpunkLoginEnhanced = () => {
       </AnimatePresence>
 
       <AnimatePresence>
-        {isLoading && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="fixed inset-0 bg-[#0A0F1B] flex items-center justify-center z-50"
-          >
-            {/* Main container - centered absolutely */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              {/* Random Laser Effects */}
-              {[...Array(8)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ 
-                    scale: 0,
-                    opacity: 0,
-                    rotate: Math.random() * 360,
-                    x: 0,
-                    y: 0
-                  }}
-                  animate={{
-                    scale: [0, 1, 1],
-                    opacity: [0, 1, 0],
-                    rotate: `${Math.random() * 360}deg`,
-                    x: [0, (Math.random() - 0.5) * 400],
-                    y: [0, (Math.random() - 0.5) * 400]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatDelay: Math.random() * 2,
-                    ease: "linear"
-                  }}
-                  className="absolute w-px h-40 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-sm"
-                  style={{
-                    left: '50%',
-                    top: '50%',
-                    transform: 'translate(-50%, -50%)'
-                  }}
-                />
-              ))}
-
-              {/* Rotating Border and Glow Container */}
-              <div className="relative w-48 h-48">
-                {/* Rotating Border */}
-                <motion.div
-                  animate={{ rotate: [0, 360] }}
-                  transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] blur-md"
-                />
-
-                {/* Outer Glow */}
-                <motion.div
-                  animate={{
-                    opacity: [0.5, 0.8, 0.5],
-                    scale: [1, 1.1, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF2E97]/20 to-[#00F6FF]/20 blur-xl"
-                />
-
-                {/* Inner Spinning Circle */}
-                <motion.div
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    rotate: [0, 180, 360],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                  className="absolute inset-0 bg-black rounded-full"
-                >
-                  <div className="absolute inset-2 rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-50" />
-                  <div className="absolute inset-4 bg-black rounded-full" />
-                  
-                  {/* Data Stream Effect */}
-                  <motion.div
-                    animate={{
-                      opacity: [0, 1, 0],
-                      y: [-40, 40],
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                    className="overflow-hidden absolute inset-x-0 h-full"
-                  >
-                    {[...Array(6)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="absolute w-px h-4 bg-[#00F6FF]"
-                        style={{
-                          left: `${(i + 1) * 15}%`,
-                          top: '50%',
-                          transform: 'translateY(-50%)',
-                          opacity: 0.6,
-                        }}
-                      />
-                    ))}
-                  </motion.div>
-                </motion.div>
-              </div>
-
-              {/* Loading Text */}
-              <motion.div
-                animate={{
-                  opacity: [0.5, 1, 0.5],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute left-1/2 -translate-x-1/2"
-                style={{
-                  bottom: '-8rem'
-                }}
-              >
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron text-3xl">
-                  INITIALIZING
-                </span>
-              </motion.div>
-
-              {/* Particles */}
-              {[...Array(12)].map((_, i) => (
-                <motion.div
-                  key={`particle-${i}`}
-                  initial={{ 
-                    scale: 0,
-                    opacity: 0,
-                    x: 0,
-                    y: 0
-                  }}
-                  animate={{
-                    scale: [0, 1, 0],
-                    opacity: [0, 0.8, 0],
-                    x: [0, (Math.random() - 0.5) * 200],
-                    y: [0, (Math.random() - 0.5) * 200]
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    repeatDelay: Math.random(),
-                    ease: "easeOut"
-                  }}
-                  className="absolute w-2 h-2 rounded-full bg-[#00F6FF]"
-                  style={{
-                    left: '50%',
-                    top: '50%',
-                    transform: 'translate(-50%, -50%)'
-                  }}
-                />
-              ))}
-            </div>
-          </motion.div>
-        )}
+        {isLoading && <CyberpunkEKGLoader />}
       </AnimatePresence>
     </div>
   );

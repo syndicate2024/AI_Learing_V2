@@ -6,6 +6,8 @@ import { ExplosionEffect, PulsingGridOverlay } from '../../../shared/components'
 import CyberpunkGrid from '../../../shared/components/CyberpunkGrid';
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
+import { CyberpunkEKGLoader } from '../../../shared/components/ui';
+import { createRoot } from 'react-dom/client';
 
 const Dashboard = () => {
   const { signOut } = useClerk();
@@ -21,10 +23,12 @@ const Dashboard = () => {
   });
   const [glitchingTab, setGlitchingTab] = useState(null);
 
+  // Save sidebar state
   useEffect(() => {
     localStorage.setItem('dashboardSidebarOpen', JSON.stringify(isSidebarOpen));
   }, [isSidebarOpen]);
 
+  // Save active section
   useEffect(() => {
     localStorage.setItem('dashboardActiveSection', activeSection);
   }, [activeSection]);
@@ -36,36 +40,47 @@ const Dashboard = () => {
       localStorage.removeItem("dashboardActiveSection");
       localStorage.removeItem('dashboardVideoShown');
       signOut()
-        .then(() => navigate("/"))
+        .then(() => {
+          // Show loading screen for 3 seconds after explosion
+          const loadingScreen = document.createElement('div');
+          loadingScreen.id = 'signout-loading';
+          loadingScreen.style.position = 'fixed';
+          loadingScreen.style.inset = '0';
+          loadingScreen.style.zIndex = '100';
+          document.body.appendChild(loadingScreen);
+          
+          const root = createRoot(loadingScreen);
+          root.render(<CyberpunkEKGLoader />);
+          
+          setTimeout(() => {
+            root.unmount();
+            loadingScreen.remove();
+            navigate("/");
+          }, 3000);
+        })
         .catch((error) => console.error("Error signing out:", error));
     }, 2550);
   }, [signOut, navigate]);
 
   const handleNavigation = useCallback((section) => {
     if (section === activeSection) return;
+
+    // Immediately navigate and update state
+    navigate(`/dashboard/${section}`);
+    setActiveSection(section);
     
-    // 30% chance to trigger glitch effect
-    const shouldGlitch = Math.random() < 0.3;
-    
-    if (shouldGlitch) {
-      setGlitchingTab(section);
-      
-      setTimeout(() => {
-        setActiveSection(section);
-        navigate(`/dashboard/${section}`);
+    // Apply glitch effect after navigation (30% chance)
+    if (Math.random() < 0.3) {
+      requestAnimationFrame(() => {
+        setGlitchingTab(section);
         setTimeout(() => setGlitchingTab(null), 300);
-      }, 50);
-    } else {
-      // Regular navigation without glitch
-      setActiveSection(section);
-      navigate(`/dashboard/${section}`);
+      });
     }
   }, [navigate, activeSection]);
 
   const handleMenuClick = useCallback(() => {
-    console.log('Menu click handler called, current state:', isSidebarOpen);
     setIsSidebarOpen(prev => !prev);
-  }, [isSidebarOpen]);
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-[#0A0F1B] overflow-hidden">
