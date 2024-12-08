@@ -54,39 +54,45 @@ const Dashboard = () => {
   }, [navigate, activeSection]);
 
   const handleMenuClick = useCallback(() => {
+    console.log('Menu click handler called, current state:', isSidebarOpen);
     setIsSidebarOpen(prev => !prev);
   }, []);
 
   return (
     <div className="relative min-h-screen bg-[#0A0F1B] overflow-hidden">
-      {/* Background Layers - Lowest z-index */}
+      {/* Background Layer - z-0 */}
       <div className="fixed inset-0 z-0">
         <CyberpunkGrid />
         <PulsingGridOverlay />
       </div>
 
-      {/* Navigation Layer - Mid z-index */}
-      <div className="relative z-10">
+      {/* Sidebar Layer - z-10 */}
+      <DashboardSidebar 
+        isOpen={isSidebarOpen}
+        activeSection={activeSection}
+        glitchingTab={glitchingTab}
+        onNavigate={handleNavigation}
+      />
+
+      {/* Content Layer - z-20 */}
+      <div className="relative z-20">
+        {/* Main Content */}
+        <div className="relative pt-32">
+          <div className="px-6 mx-auto max-w-7xl flex items-center justify-center min-h-[calc(100vh-208px)]">
+            <Outlet />
+          </div>
+        </div>
+      </div>
+
+      {/* Navbar Layer - z-30 */}
+      <div className="relative z-30">
         <DashboardNavbar 
           onMenuClick={handleMenuClick}
           onSignOut={handleSignOut}
         />
-        <DashboardSidebar 
-          isOpen={isSidebarOpen}
-          activeSection={activeSection}
-          glitchingTab={glitchingTab}
-          onNavigate={handleNavigation}
-        />
       </div>
 
-      {/* Main Content Area - Higher z-index */}
-      <div className="relative z-20 pt-32">
-        <div className="px-6 mx-auto max-w-7xl flex items-center justify-center min-h-[calc(100vh-208px)]">
-          <Outlet />
-        </div>
-      </div>
-
-      {/* Effects Layer - Highest z-index */}
+      {/* Effects Layer - z-50 */}
       {showExplosion && (
         <div className="fixed inset-0 z-50 pointer-events-none">
           <ExplosionEffect 

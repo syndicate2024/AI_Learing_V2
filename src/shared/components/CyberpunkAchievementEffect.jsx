@@ -174,10 +174,12 @@ const CyberpunkAchievementEffect = ({
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100vw',
-        height: '100vh',
-        pointerEvents: isVisible ? 'auto' : 'none',
-        zIndex: 999999
+        right: 0,
+        bottom: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: isVisible ? 'all' : 'none',
+        zIndex: 100
       }}
     >
       <AnimatePresence>
@@ -185,15 +187,10 @@ const CyberpunkAchievementEffect = ({
           <>
             {/* Dark overlay */}
             <motion.div
-              className="absolute inset-0"
+              className="fixed inset-0"
               style={{ 
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
                 backgroundColor: 'rgba(0, 0, 0, 0.95)',
-                zIndex: 1000000
+                zIndex: 101
               }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -205,32 +202,27 @@ const CyberpunkAchievementEffect = ({
             <div 
               ref={containerRef} 
               style={{ 
-                position: 'absolute',
+                position: 'fixed',
                 top: 0,
                 left: 0,
                 width: '100%',
                 height: '100%',
-                zIndex: 1000001
+                zIndex: 102
               }}
             />
 
             {/* Achievement Text Overlay */}
             <motion.div
-              className="absolute inset-0 flex items-center justify-center"
+              className="fixed inset-0 flex items-center justify-center"
               style={{ 
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                zIndex: 1000002
+                zIndex: 103
               }}
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 1.2, y: -20 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              <div className="text-center">
+              <div className="text-center px-4">
                 {/* Main Title */}
                 <motion.h1
                   className="text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron mb-6 select-none"

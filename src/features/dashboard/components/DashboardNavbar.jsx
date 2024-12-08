@@ -7,33 +7,45 @@ import DashboardLogo from '../../../shared/components/DashboardLogo';
 const DashboardNavbar = ({ onMenuClick, onSignOut }) => {
   const { user } = useUser();
 
+  const handleMenuClick = (e) => {
+    console.log('Menu button clicked');
+    e.stopPropagation();
+    onMenuClick?.();
+  };
+
   return (
     <nav className="fixed top-0 right-0 left-0 z-40 h-32 border-b backdrop-blur-xl bg-black/40 border-white/10">
       <div className="relative z-[1] flex items-center justify-between mx-auto max-w-7xl h-full px-12">
         {/* Left Section - Title with Menu */}
         <div className="flex items-center min-w-[400px] pt-4">
-          <motion.h1
-            className="flex items-center gap-4 text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron"
-            animate={{
-              textShadow: [
-                "0 0 10px rgba(0,246,255,0.5)",
-                "0 0 15px rgba(255,46,151,0.5)",
-                "0 0 10px rgba(0,246,255,0.5)",
-              ],
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            CYBERPUNK DASHBOARD
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onMenuClick}
-              className="overflow-hidden relative p-2 ml-2 rounded-full transition-colors group"
+          <div className="flex items-center gap-4">
+            <motion.h1
+              className="text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron"
+              animate={{
+                textShadow: [
+                  "0 0 10px rgba(0,246,255,0.5)",
+                  "0 0 15px rgba(255,46,151,0.5)",
+                  "0 0 10px rgba(0,246,255,0.5)",
+                ],
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] opacity-0 group-hover:opacity-20 transition-opacity" />
-              <Menu className="w-6 h-6 text-[#00F6FF]" />
+              CYBERPUNK DASHBOARD
+            </motion.h1>
+            
+            {/* Hamburger Menu Button */}
+            <motion.button
+              onClick={handleMenuClick}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-r from-[#FF2E97]/10 to-[#00F6FF]/10 
+                hover:from-[#FF2E97]/20 hover:to-[#00F6FF]/20 cursor-pointer transition-all duration-200
+                border border-white/10 hover:border-white/20"
+              style={{ zIndex: 50 }}
+            >
+              <Menu className="w-6 h-6 text-[#00F6FF] hover:text-white transition-colors" />
             </motion.button>
-          </motion.h1>
+          </div>
         </div>
 
         {/* Center Section - Logo */}
