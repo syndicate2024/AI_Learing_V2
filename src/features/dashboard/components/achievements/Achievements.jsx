@@ -80,7 +80,6 @@ const Achievements = () => {
     setIsButtonDisabled(true);
     setActiveAchievement(achievement);
     
-    // Longer timeout for grand master achievement
     const timeout = achievement.effect === 'grandMaster' ? 24000 : 8000;
     
     setTimeout(() => {
@@ -146,6 +145,11 @@ const Achievements = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
+            whileHover={{ 
+              y: -10,
+              scale: 1.02,
+              transition: { duration: 0.2 }
+            }}
             onClick={() => handleAchievementClick(achievement)}
             className={`
               relative overflow-hidden rounded-lg border-2 border-white/20 shadow-lg 
@@ -154,7 +158,7 @@ const Achievements = () => {
                 ? 'opacity-50 cursor-not-allowed' 
                 : isButtonDisabled 
                   ? 'opacity-50 cursor-not-allowed' 
-                  : 'hover:shadow-xl hover:scale-105 hover:-translate-y-1'
+                  : ''
               }
             `}
             style={{
@@ -163,7 +167,7 @@ const Achievements = () => {
             }}
           >
             {/* Background Pattern */}
-            <div 
+            <motion.div 
               className="absolute inset-0 opacity-10"
               style={{
                 backgroundImage: `
@@ -175,19 +179,35 @@ const Achievements = () => {
                 backgroundSize: '20px 20px',
                 backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
               }}
+              whileHover={{ opacity: 0.15 }}
             />
             
             {/* Glow Effect */}
-            <div className={`absolute inset-0 bg-gradient-to-r ${achievement.theme} opacity-30`} />
+            <motion.div 
+              className={`absolute inset-0 bg-gradient-to-r ${achievement.theme} opacity-30`}
+              whileHover={{ opacity: 0.4 }}
+            />
             
             {/* Content */}
             <div className="relative z-10 p-6">
               <div className="flex items-center gap-4 mb-4">
-                <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${achievement.theme} flex items-center justify-center shadow-lg text-2xl`}>
+                <motion.div 
+                  className={`w-12 h-12 rounded-full bg-gradient-to-r ${achievement.theme} flex items-center justify-center shadow-lg text-2xl`}
+                  whileHover={{ 
+                    scale: 1.1,
+                    rotate: [0, 5, -5, 0],
+                    transition: { duration: 0.3 }
+                  }}
+                >
                   {achievement.icon}
-                </div>
+                </motion.div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">{achievement.title}</h3>
+                  <motion.h3 
+                    className="text-lg font-bold text-white"
+                    whileHover={{ textShadow: "0 0 8px rgba(255,255,255,0.5)" }}
+                  >
+                    {achievement.title}
+                  </motion.h3>
                   <p className="text-white/80">{achievement.description}</p>
                 </div>
               </div>
@@ -197,13 +217,9 @@ const Achievements = () => {
                   initial={{ width: 0 }}
                   animate={{ width: `${achievement.progress}%` }}
                   transition={{ duration: 1, delay: i * 0.1 }}
+                  whileHover={{ filter: "brightness(1.2)" }}
                 />
               </div>
-            </div>
-
-            {/* Hover Glow */}
-            <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300">
-              <div className={`absolute inset-0 bg-gradient-to-r ${achievement.theme} opacity-30`} />
             </div>
           </motion.div>
         ))}
@@ -214,13 +230,18 @@ const Achievements = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
+        whileHover={{ 
+          y: -15,
+          scale: 1.03,
+          transition: { duration: 0.3 }
+        }}
         onClick={() => handleAchievementClick(grandMasterAchievement)}
         className={`
           relative overflow-hidden rounded-lg border-2 border-[#FFD700] shadow-lg 
           transition-all duration-300 cursor-pointer mt-8 col-span-full
           ${isButtonDisabled 
             ? 'opacity-50 cursor-not-allowed' 
-            : 'hover:shadow-xl hover:scale-105 hover:-translate-y-1'
+            : ''
           }
         `}
         style={{
@@ -229,7 +250,7 @@ const Achievements = () => {
         }}
       >
         {/* Background Pattern */}
-        <div 
+        <motion.div 
           className="absolute inset-0 opacity-10"
           style={{
             backgroundImage: `
@@ -241,19 +262,15 @@ const Achievements = () => {
             backgroundSize: '30px 30px',
             backgroundPosition: '0 0, 0 15px, 15px -15px, -15px 0px'
           }}
+          whileHover={{ opacity: 0.2 }}
         />
         
         {/* Animated Glow Effect */}
         <motion.div 
           className={`absolute inset-0 bg-gradient-to-r ${grandMasterAchievement.theme} opacity-30`}
-          animate={{
-            opacity: [0.2, 0.4, 0.2],
-            scale: [1, 1.02, 1],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "linear"
+          whileHover={{ 
+            opacity: [0.3, 0.5, 0.3],
+            transition: { duration: 2, repeat: Infinity }
           }}
         />
         
@@ -262,14 +279,10 @@ const Achievements = () => {
           <div className="flex items-center gap-6 mb-6">
             <motion.div 
               className={`w-16 h-16 rounded-full bg-gradient-to-r ${grandMasterAchievement.theme} flex items-center justify-center shadow-lg text-3xl`}
-              animate={{
-                scale: [1, 1.1, 1],
-                rotate: [0, 5, -5, 0],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "linear"
+              whileHover={{ 
+                scale: 1.2,
+                rotate: [0, 10, -10, 0],
+                transition: { duration: 0.5 }
               }}
             >
               {grandMasterAchievement.icon}
@@ -277,14 +290,14 @@ const Achievements = () => {
             <div>
               <motion.h3 
                 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#FF2E97] to-[#4169E1] mb-2"
-                animate={{
+                whileHover={{
                   textShadow: [
                     "0 0 20px rgba(255,215,0,0.5)",
                     "0 0 30px rgba(255,215,0,0.8)",
                     "0 0 20px rgba(255,215,0,0.5)",
                   ],
+                  transition: { duration: 1, repeat: Infinity }
                 }}
-                transition={{ duration: 2, repeat: Infinity }}
               >
                 {grandMasterAchievement.title}
               </motion.h3>
@@ -297,14 +310,18 @@ const Achievements = () => {
               initial={{ width: 0 }}
               animate={{ width: `${grandMasterAchievement.progress}%` }}
               transition={{ duration: 1.5, delay: 1 }}
+              whileHover={{ filter: "brightness(1.3)" }}
             />
           </div>
         </div>
 
         {/* Hover Glow */}
-        <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300">
+        <motion.div 
+          className="absolute inset-0 opacity-0 transition-opacity duration-300"
+          whileHover={{ opacity: 1 }}
+        >
           <div className={`absolute inset-0 bg-gradient-to-r ${grandMasterAchievement.theme} opacity-30`} />
-        </div>
+        </motion.div>
       </motion.div>
     </div>
   );
