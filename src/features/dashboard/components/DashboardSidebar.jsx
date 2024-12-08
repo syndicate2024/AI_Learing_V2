@@ -37,7 +37,7 @@ const DashboardSidebar = ({ isOpen, activeSection, glitchingTab, onNavigate }) =
   return (
     <motion.div
       className="fixed top-0 left-0 h-screen border-r backdrop-blur-xl bg-black/40 border-white/10"
-      style={{ zIndex: 30 }}
+      style={{ zIndex: 10 }}
       initial={false}
       animate={{
         width: isOpen ? "280px" : "0px",

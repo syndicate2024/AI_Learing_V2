@@ -56,26 +56,26 @@ const Dashboard = () => {
   const handleMenuClick = useCallback(() => {
     console.log('Menu click handler called, current state:', isSidebarOpen);
     setIsSidebarOpen(prev => !prev);
-  }, []);
+  }, [isSidebarOpen]);
 
   return (
     <div className="relative min-h-screen bg-[#0A0F1B] overflow-hidden">
-      {/* Background Layer - z-0 */}
+      {/* Background Layer */}
       <div className="fixed inset-0 z-0">
         <CyberpunkGrid />
         <PulsingGridOverlay />
       </div>
 
-      {/* Sidebar Layer - z-10 */}
-      <DashboardSidebar 
-        isOpen={isSidebarOpen}
-        activeSection={activeSection}
-        glitchingTab={glitchingTab}
-        onNavigate={handleNavigation}
-      />
+      {/* Content Layer */}
+      <div className="relative z-10">
+        {/* Sidebar */}
+        <DashboardSidebar 
+          isOpen={isSidebarOpen}
+          activeSection={activeSection}
+          glitchingTab={glitchingTab}
+          onNavigate={handleNavigation}
+        />
 
-      {/* Content Layer - z-20 */}
-      <div className="relative z-20">
         {/* Main Content */}
         <div className="relative pt-32">
           <div className="px-6 mx-auto max-w-7xl flex items-center justify-center min-h-[calc(100vh-208px)]">
@@ -84,15 +84,15 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Navbar Layer - z-30 */}
-      <div className="relative z-30">
+      {/* Top Layer - Navbar */}
+      <div className="relative z-40">
         <DashboardNavbar 
           onMenuClick={handleMenuClick}
           onSignOut={handleSignOut}
         />
       </div>
 
-      {/* Effects Layer - z-50 */}
+      {/* Effects Layer */}
       {showExplosion && (
         <div className="fixed inset-0 z-50 pointer-events-none">
           <ExplosionEffect 
