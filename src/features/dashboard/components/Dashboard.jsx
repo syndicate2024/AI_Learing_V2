@@ -44,13 +44,22 @@ const Dashboard = () => {
   const handleNavigation = useCallback((section) => {
     if (section === activeSection) return;
     
-    setGlitchingTab(section);
+    // 30% chance to trigger glitch effect
+    const shouldGlitch = Math.random() < 0.3;
     
-    setTimeout(() => {
+    if (shouldGlitch) {
+      setGlitchingTab(section);
+      
+      setTimeout(() => {
+        setActiveSection(section);
+        navigate(`/dashboard/${section}`);
+        setTimeout(() => setGlitchingTab(null), 300);
+      }, 50);
+    } else {
+      // Regular navigation without glitch
       setActiveSection(section);
       navigate(`/dashboard/${section}`);
-      setTimeout(() => setGlitchingTab(null), 300);
-    }, 50);
+    }
   }, [navigate, activeSection]);
 
   const handleMenuClick = useCallback(() => {
