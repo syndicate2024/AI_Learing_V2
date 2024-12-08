@@ -8,4 +8,5 @@ export { default as RotatingLogo } from './RotatingLogo';
 export { default as CyberpunkGrid } from './CyberpunkGrid';
 export { default as PulsingGridOverlay } from './PulsingGridOverlay';
 export { default as CyberpunkAchievementEffect } from './CyberpunkAchievementEffect';
+export { default as FireworksAchievementEffect } from './FireworksAchievementEffect';
 // Add other component exports as needed 

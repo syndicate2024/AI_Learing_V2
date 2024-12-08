@@ -1,75 +1,99 @@
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { CyberpunkAchievementEffect } from '../../../../shared/components';
+import { CyberpunkAchievementEffect, FireworksAchievementEffect } from '../../../../shared/components';
 import { Trophy } from 'lucide-react';
 
+const achievementData = [
+  {
+    title: "MASTER HACKER",
+    description: "You've unlocked the secrets of the matrix!",
+    effect: "cyber",
+    progress: 100
+  },
+  {
+    title: "BOOM!!!",
+    description: "YOU ARE AWESOME",
+    effect: "fireworks",
+    progress: 85
+  },
+  {
+    title: "CYBER NINJA",
+    description: "Silent. Swift. Deadly.",
+    effect: "cyber",
+    progress: 75
+  },
+  {
+    title: "BOOM!!!",
+    description: "INCREDIBLE SKILLS!",
+    effect: "fireworks",
+    progress: 65
+  },
+  {
+    title: "DATA WIZARD",
+    description: "Master of the Digital Realm",
+    effect: "cyber",
+    progress: 45
+  },
+  {
+    title: "BOOM!!!",
+    description: "UNSTOPPABLE!",
+    effect: "fireworks",
+    progress: 30
+  }
+];
+
 const Achievements = () => {
-  const [showAchievement, setShowAchievement] = useState(false);
+  const [activeAchievement, setActiveAchievement] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
-  const handleTestAchievement = useCallback(() => {
-    console.log("Test achievement button clicked"); // Debug log
+  const handleAchievementClick = useCallback((achievement) => {
     if (isButtonDisabled) return;
     
     setIsButtonDisabled(true);
-    setShowAchievement(true);
-    console.log("Achievement state set to true"); // Debug log
+    setActiveAchievement(achievement);
     
     setTimeout(() => {
       setIsButtonDisabled(false);
-      console.log("Button re-enabled"); // Debug log
-    }, 4000);
+    }, 8000); // Match the duration of the effects
   }, [isButtonDisabled]);
 
   const handleAchievementComplete = useCallback(() => {
-    console.log("Achievement animation complete"); // Debug log
-    setShowAchievement(false);
+    setActiveAchievement(null);
   }, []);
 
   return (
     <div className="relative w-full max-w-6xl mx-auto p-8 z-0">
-      {/* Achievement Effect */}
+      {/* Achievement Effects */}
       <CyberpunkAchievementEffect 
-        isVisible={showAchievement}
+        isVisible={activeAchievement?.effect === 'cyber'}
         onComplete={handleAchievementComplete}
-        achievementTitle="MASTER HACKER"
-        achievementDescription="You've unlocked the secrets of the matrix!"
+        achievementTitle={activeAchievement?.title}
+        achievementDescription={activeAchievement?.description}
       />
-
-      {/* Test Button */}
-      <div className="relative z-10 flex justify-center mb-8">
-        <motion.button
-          onClick={handleTestAchievement}
-          disabled={isButtonDisabled}
-          className={`
-            px-8 py-4 rounded-lg bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] 
-            text-white font-bold relative group overflow-hidden
-            transition-all duration-300 transform hover:scale-105 active:scale-95
-            ${isButtonDisabled 
-              ? 'opacity-50 cursor-not-allowed' 
-              : 'cursor-pointer hover:shadow-lg hover:shadow-[#FF2E97]/20 hover:-translate-y-0.5'
-            }
-          `}
-        >
-          <span className="flex items-center gap-2 relative z-10">
-            <Trophy className="w-6 h-6" />
-            {isButtonDisabled ? 'Achievement in Progress...' : 'Test Achievement Animation'}
-          </span>
-          {!isButtonDisabled && (
-            <div className="absolute inset-0 bg-gradient-to-r from-[#00F6FF] to-[#FF2E97] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          )}
-        </motion.button>
-      </div>
+      <FireworksAchievementEffect 
+        isVisible={activeAchievement?.effect === 'fireworks'}
+        onComplete={handleAchievementComplete}
+        achievementTitle={activeAchievement?.title}
+        achievementDescription={activeAchievement?.description}
+      />
 
       {/* Achievement Cards */}
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[...Array(6)].map((_, i) => (
+        {achievementData.map((achievement, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="relative overflow-hidden rounded-lg border-2 border-white/20 shadow-lg hover:shadow-xl transition-all duration-300"
+            onClick={() => handleAchievementClick(achievement)}
+            className={`
+              relative overflow-hidden rounded-lg border-2 border-white/20 shadow-lg 
+              transition-all duration-300 cursor-pointer
+              ${isButtonDisabled 
+                ? 'opacity-50 cursor-not-allowed' 
+                : 'hover:shadow-xl hover:scale-105 hover:-translate-y-1'
+              }
+            `}
             style={{
               background: 'linear-gradient(to bottom right, rgba(0, 0, 0, 0.97), rgba(0, 0, 0, 0.95))',
               boxShadow: '0 4px 20px rgba(0, 0, 0, 0.7)'
@@ -100,15 +124,15 @@ const Achievements = () => {
                   <Trophy className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">Achievement {i + 1}</h3>
-                  <p className="text-white/80">Coming Soon</p>
+                  <h3 className="text-lg font-bold text-white">{achievement.title}</h3>
+                  <p className="text-white/80">{achievement.description}</p>
                 </div>
               </div>
               <div className="w-full bg-black/50 rounded-full h-2.5 overflow-hidden p-0.5">
                 <motion.div 
                   className="h-full rounded-full bg-gradient-to-r from-[#FF2E97] to-[#00F6FF]"
                   initial={{ width: 0 }}
-                  animate={{ width: `${Math.random() * 100}%` }}
+                  animate={{ width: `${achievement.progress}%` }}
                   transition={{ duration: 1, delay: i * 0.1 }}
                 />
               </div>
