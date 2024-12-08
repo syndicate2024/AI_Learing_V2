@@ -11,6 +11,7 @@ import {
   ProtectedRoute 
 } from '../features/auth/components';
 import Dashboard from '../features/dashboard/components/Dashboard';
+import DashboardRoutes from '../features/dashboard/routes';
 
 // Loading screen component stays the same
 const LoadingScreen = () => (
@@ -99,10 +100,12 @@ function AppRoutes() {
         
         {/* Protected routes */}
         <Route
-          path={config.routes.dashboard}
+          path="/dashboard/*"
           element={
             <ProtectedRoute>
-              <Dashboard /> 
+              <Dashboard>
+                <DashboardRoutes />
+              </Dashboard>
             </ProtectedRoute>
           }
         />

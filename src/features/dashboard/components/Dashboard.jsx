@@ -21,12 +21,10 @@ const Dashboard = () => {
   });
   const [glitchingTab, setGlitchingTab] = useState(null);
 
-  // Update localStorage when sidebar state changes
   useEffect(() => {
     localStorage.setItem('dashboardSidebarOpen', JSON.stringify(isSidebarOpen));
   }, [isSidebarOpen]);
 
-  // Update localStorage when active section changes
   useEffect(() => {
     localStorage.setItem('dashboardActiveSection', activeSection);
   }, [activeSection]);
@@ -50,7 +48,7 @@ const Dashboard = () => {
     
     setTimeout(() => {
       setActiveSection(section);
-      navigate(section);
+      navigate(`/dashboard/${section}`);
       setTimeout(() => setGlitchingTab(null), 300);
     }, 50);
   }, [navigate, activeSection]);
@@ -61,47 +59,34 @@ const Dashboard = () => {
 
   return (
     <div className="relative min-h-screen bg-[#0A0F1B] overflow-hidden">
-      {/* Base Layer - Subtle Grid */}
-      <CyberpunkGrid />
+      {/* Background Layers - Lowest z-index */}
+      <div className="fixed inset-0 z-0">
+        <CyberpunkGrid />
+        <PulsingGridOverlay />
+      </div>
 
-      {/* Second Layer - Pulsing Grid */}
-      <PulsingGridOverlay />
+      {/* Navigation Layer - Mid z-index */}
+      <div className="relative z-10">
+        <DashboardNavbar 
+          onMenuClick={handleMenuClick}
+          onSignOut={handleSignOut}
+        />
+        <DashboardSidebar 
+          isOpen={isSidebarOpen}
+          activeSection={activeSection}
+          glitchingTab={glitchingTab}
+          onNavigate={handleNavigation}
+        />
+      </div>
 
-      {/* Navigation and Sidebar */}
-      <DashboardNavbar 
-        onMenuClick={handleMenuClick}
-        onSignOut={handleSignOut}
-      />
-      <DashboardSidebar 
-        isOpen={isSidebarOpen}
-        activeSection={activeSection}
-        glitchingTab={glitchingTab}
-        onNavigate={handleNavigation}
-      />
+      {/* Main Content Area - Higher z-index */}
+      <div className="relative z-20 pt-32">
+        <div className="px-6 mx-auto max-w-7xl flex items-center justify-center min-h-[calc(100vh-208px)]">
+          <Outlet />
+        </div>
+      </div>
 
-      {/* Coming Soon - Mid Layer */}
-      <motion.div
-        className="fixed inset-0 z-20 flex items-center justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <motion.h1
-          className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF2E97] to-[#00F6FF] font-orbitron"
-          animate={{
-            textShadow: [
-              "0 0 20px rgba(0,246,255,0.5)",
-              "0 0 30px rgba(255,46,151,0.5)",
-              "0 0 20px rgba(0,246,255,0.5)",
-            ],
-          }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          COMING SOON
-        </motion.h1>
-      </motion.div>
-
-      {/* Explosion Effect - Top Layer */}
+      {/* Effects Layer - Highest z-index */}
       {showExplosion && (
         <div className="fixed inset-0 z-50 pointer-events-none">
           <ExplosionEffect 
@@ -111,13 +96,6 @@ const Dashboard = () => {
           />
         </div>
       )}
-
-      {/* Main Content Area */}
-      <div className="relative z-15 pt-32">
-        <div className="px-6 mx-auto max-w-7xl flex items-center justify-center min-h-[calc(100vh-208px)]">
-          <Outlet />
-        </div>
-      </div>
     </div>
   );
 };
